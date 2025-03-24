@@ -107,6 +107,12 @@ async function runDemo() {
         break
       }
 
+      // Ask if user wants LLM answer
+      const useLLMAnswer = await askQuestion(
+        chalk.bold.white('Generate LLM answer? (y/n, default: y): ')
+      )
+      const llm_answer = useLLMAnswer.toLowerCase() !== 'n'
+
       console.log(chalk.gray('--------------------------------------'))
       console.log(chalk.magenta('⚙️ Processing query...'))
 
@@ -162,6 +168,7 @@ async function runDemo() {
         const startTime = Date.now()
         const response = await axios.post('http://localhost:3000/api/query', {
           query,
+          llm_answer,
         })
         const endTime = Date.now()
 
@@ -173,7 +180,48 @@ async function runDemo() {
         // Display formatted response
         console.log(chalk.gray('--------------------------------------'))
         console.log(chalk.bold.white('Response:'))
-        console.log(chalk.white(response.data.response))
+
+        // Handle different response types
+        if (response.data.error) {
+          console.log(chalk.red('Error:', response.data.answer))
+        } else if (response.data.needsClarification) {
+          console.log(
+            chalk.yellow('Clarification needed:', response.data.answer)
+          )
+        } else if (response.data.noAnswer) {
+          console.log(
+            chalk.yellow('No answer available:', response.data.answer)
+          )
+        } else if (llm_answer && response.data.answer) {
+          // Only show LLM answer if llm_answer is true and we have an answer
+          console.log(chalk.white(response.data.answer))
+        } else if (!llm_answer) {
+          // When llm_answer is false, show a message indicating we're only showing tool responses
+          console.log(
+            chalk.yellow('LLM answer disabled - showing tool responses only')
+          )
+        }
+
+        // Display tool responses if any
+        if (
+          response.data.toolResponses &&
+          response.data.toolResponses.length > 0
+        ) {
+          console.log(chalk.gray('\n--------------------------------------'))
+          console.log(chalk.bold.white('Tool Responses:'))
+          response.data.toolResponses.forEach((toolResponse, index) => {
+            console.log(chalk.cyan(`\nTool ${index + 1}: ${toolResponse.tool}`))
+            console.log(
+              chalk.gray('Input:'),
+              JSON.stringify(toolResponse.input, null, 2)
+            )
+            if (toolResponse.error) {
+              console.log(chalk.red('Error:'), toolResponse.response)
+            } else {
+              console.log(chalk.green('Response:'), toolResponse.response)
+            }
+          })
+        }
       } catch (error) {
         console.log(chalk.red('Error processing query:'), error.message)
         if (error.response) {
