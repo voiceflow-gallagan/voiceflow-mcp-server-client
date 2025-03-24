@@ -26,14 +26,24 @@ A Node.js client for the Model Context Protocol (MCP) that integrates with remot
 npm install
 ```
 
-3. Create a `.env` file in the root directory with the following variables:
+3. Set up environment variables:
+   - Copy `.env.template` to create a new `.env` file:
+   ```bash
+   cp .env.template .env
+   ```
+   - Update the `.env` file with your actual values:
+   ```
+   ANTHROPIC_API_KEY=your-anthropic-api-key
+   CLAUDE_MODEL=claude-3-5-sonnet-20241022
+   PORT=3000
+   BRAVE_API_KEY=your-brave-api-key
+   ```
 
-```
-PORT=3000
-ANTHROPIC_API_KEY=your_api_key_here
-```
-
-Replace `your_api_key_here` with your actual Anthropic API key.
+   Required environment variables:
+   - `ANTHROPIC_API_KEY`: Your Anthropic API key for Claude AI
+   - `CLAUDE_MODEL`: The Claude model to use (default: claude-3-5-sonnet-20241022)
+   - `PORT`: The port number for the server (default: 3000)
+   - `BRAVE_API_KEY`: Your Brave Search API key for search functionality
 
 4. Create a `servers-config.json` file in the root directory to configure your remote MCP servers:
 
