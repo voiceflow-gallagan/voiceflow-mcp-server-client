@@ -241,6 +241,7 @@ async function processQuery({
   userId = null,
   userEmail = null,
   queryTimeoutMs = 30000, // 30s timeout for the entire query
+  llm_answer = false, // Whether to generate an LLM answer from tool responses
 }) {
   // Create a promise that will reject after the timeout
   const queryTimeout = new Promise((_, reject) => {
@@ -267,7 +268,7 @@ async function processQuery({
           {
             role: 'assistant',
             content:
-              'Your an AI agent trying to help with user query using available MCP tools. If you need clarification from the user, respond with a message prefixed with #CLARIFY# followed by your question. Return #NOANSWER# if you cannot answer the query using the available tools.',
+              'Your an AI agent trying to help with user query using available MCP tools. If you need clarification from the user, respond with a message prefixed with #CLARIFY# followed by your question. If you cannot answer the query using the available tools, respond with #NOANSWER#.',
           },
         ],
         allTools: [],
@@ -416,7 +417,7 @@ async function processQuery({
 
       context.messages.push({
         role: 'user',
-        content: `${query}\n\n${userInstruction}Try to answer using the available tools. If you need clarification, respond with #CLARIFY# followed by your question. Return #NOANSWER# if you cannot answer with available tools.`,
+        content: `${query}\n\n${userInstruction}Try to answer using the available tools. If you need clarification, respond with #CLARIFY# followed by your question. If you cannot answer with available tools, respond with #NOANSWER#.`,
       })
 
       // Call Claude with the conversation history
@@ -430,6 +431,7 @@ async function processQuery({
       // Process any tool calls that Claude wants to make
       let finalResponse = ''
       let hasToolUse = false
+      let toolResponses = []
 
       if (response.content.some((item) => item.type === 'tool_use')) {
         hasToolUse = true
@@ -530,6 +532,14 @@ async function processQuery({
 
             console.log('Tool response:', toolResponse)
 
+            // Store tool response
+            toolResponses.push({
+              tool: toolName,
+              input: toolCall,
+              response: toolResponse.content[0].text,
+              server: originalServerName || context.primaryServer.name,
+            })
+
             // Add user message with tool result to context
             context.messages.push({
               role: 'user',
@@ -544,6 +554,15 @@ async function processQuery({
           } catch (error) {
             console.error(`Error calling tool ${originalToolName}:`, error)
 
+            // Store error response
+            toolResponses.push({
+              tool: toolName,
+              input: toolCall,
+              response: `Error: ${error.message}`,
+              server: originalServerName || context.primaryServer.name,
+              error: true,
+            })
+
             // Add error as tool result
             context.messages.push({
               role: 'user',
@@ -555,6 +574,45 @@ async function processQuery({
                 },
               ],
             })
+          }
+        }
+
+        // If llm_answer is false, return tool responses without generating a final answer
+        if (!llm_answer) {
+          // Process any follow-up tool calls before returning
+          const followUpResponse = await anthropic.messages.create({
+            model: config.claudeModel,
+            max_tokens: 2000,
+            messages: context.messages,
+            tools: context.formattedTools,
+          })
+
+          // If there are more tool calls, process them recursively
+          if (
+            followUpResponse.content.some((item) => item.type === 'tool_use')
+          ) {
+            console.log('Processing follow-up tool calls before returning')
+            const followUpResult = await processFollowUpToolCalls(
+              context,
+              followUpResponse,
+              context.formattedTools,
+              config.claudeModel
+            )
+
+            // Merge tool responses from follow-up calls
+            toolResponses = [
+              ...toolResponses,
+              ...(followUpResult.toolResponses || []),
+            ]
+          }
+
+          return {
+            response: null,
+            conversationId,
+            userId: context.userId,
+            needsClarification: false,
+            noAnswer: false,
+            toolResponses,
           }
         }
 
@@ -582,14 +640,19 @@ async function processQuery({
           )
 
           // Process follow-up tool calls recursively - add to existing context and continue until done
-          const recursiveResponse = await processFollowUpToolCalls(
+          const recursiveResult = await processFollowUpToolCalls(
             context,
             finalFollowUpResponse,
             context.formattedTools,
             config.claudeModel
           )
 
-          finalResponse = recursiveResponse
+          // Handle the recursive result structure
+          finalResponse = recursiveResult.response || ''
+          toolResponses = [
+            ...toolResponses,
+            ...(recursiveResult.toolResponses || []),
+          ]
         } else {
           // Add final response to context if no more tool calls
           context.messages.push({
@@ -614,14 +677,25 @@ async function processQuery({
       // Save updated conversation context
       conversationContexts.set(conversationId, context)
 
-      // Check if Claude is asking for clarification
-      const textResponse = finalResponse
+      // Check if Claude is asking for clarification or cannot answer
+      const textResponse =
+        typeof finalResponse === 'string' ? finalResponse : ''
+      const needsClarification = textResponse.includes('#CLARIFY#')
+      const noAnswer = textResponse.includes('#NOANSWER#')
+
+      // Strip the markers from the response text
+      let cleanResponse = textResponse
+        .replace(/#CLARIFY#/g, '')
+        .replace(/#NOANSWER#/g, '')
+        .trim()
 
       return {
-        response: textResponse,
+        response: cleanResponse,
         conversationId,
         userId: context.userId,
-        needsClarification: textResponse.includes('#CLARIFY#'),
+        needsClarification,
+        noAnswer,
+        toolResponses,
       }
     } catch (error) {
       console.error('Error processing query:', error)
@@ -651,6 +725,7 @@ async function processQuery({
         conversationId,
         userId: userId,
         error: true,
+        toolResponses: [],
       }
     }
   })()
@@ -665,6 +740,7 @@ async function processQuery({
       conversationId,
       userId: userId,
       error: true,
+      toolResponses: [],
     }
   }
 }
@@ -683,6 +759,7 @@ async function processFollowUpToolCalls(
   }
 
   const toolUsages = response.content.filter((item) => item.type === 'tool_use')
+  let toolResponses = []
 
   // Add assistant's response with tool calls to context
   context.messages.push({
@@ -782,6 +859,14 @@ async function processFollowUpToolCalls(
 
       console.log('Follow-up tool response:', toolResponse)
 
+      // Store tool response
+      toolResponses.push({
+        tool: toolName,
+        input: toolCall,
+        response: toolResponse.content[0].text,
+        server: originalServerName || context.primaryServer.name,
+      })
+
       // Add user message with tool result to context
       context.messages.push({
         role: 'user',
@@ -795,6 +880,15 @@ async function processFollowUpToolCalls(
       })
     } catch (error) {
       console.error(`Error calling follow-up tool ${originalToolName}:`, error)
+
+      // Store error response
+      toolResponses.push({
+        tool: toolName,
+        input: toolCall,
+        response: `Error: ${error.message}`,
+        server: originalServerName || context.primaryServer.name,
+        error: true,
+      })
 
       // Add error as tool result
       context.messages.push({
@@ -823,13 +917,23 @@ async function processFollowUpToolCalls(
     console.log(
       `Additional tools requested in depth ${depth + 1}, processing recursively`
     )
-    return await processFollowUpToolCalls(
+    const recursiveResult = await processFollowUpToolCalls(
       context,
       followUpResponse,
       tools,
       model,
       depth + 1
     )
+
+    // If the recursive result includes tool responses, merge them
+    if (Array.isArray(recursiveResult.toolResponses)) {
+      toolResponses = [...toolResponses, ...recursiveResult.toolResponses]
+    }
+
+    return {
+      response: recursiveResult.response || '',
+      toolResponses,
+    }
   }
 
   // No more tool calls, add the final response to context
@@ -838,11 +942,14 @@ async function processFollowUpToolCalls(
     content: followUpResponse.content,
   })
 
-  // Return the text from the final response
-  return followUpResponse.content
-    .filter((item) => item.type === 'text')
-    .map((item) => item.text)
-    .join('')
+  // Return both the text response and tool responses
+  return {
+    response: followUpResponse.content
+      .filter((item) => item.type === 'text')
+      .map((item) => item.text)
+      .join(''),
+    toolResponses,
+  }
 }
 
 // Function to get all conversations for a specific user

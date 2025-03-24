@@ -11,8 +11,14 @@ const router = express.Router()
 // POST endpoint to process queries
 router.post('/query', async (req, res) => {
   try {
-    const { query, conversationId, userId, userEmail, queryTimeoutMs } =
-      req.body
+    const {
+      query,
+      conversationId,
+      userId,
+      userEmail,
+      queryTimeoutMs,
+      llm_answer = false,
+    } = req.body
 
     if (!query) {
       return res.status(400).json({
@@ -27,11 +33,18 @@ router.post('/query', async (req, res) => {
       userId,
       userEmail,
       queryTimeoutMs,
+      llm_answer,
     })
 
     res.json({
       query,
-      response,
+      answer: response.response || null,
+      conversationId: response.conversationId,
+      userId: response.userId,
+      needsClarification: response.needsClarification,
+      noAnswer: response.noAnswer,
+      error: response.error,
+      toolResponses: response.toolResponses,
     })
   } catch (error) {
     console.error('API error:', error)

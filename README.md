@@ -1,14 +1,14 @@
 # MCP Client
 
-A Node.js client for the Model Context Protocol (MCP) that integrates with external MCP servers to provide tools for LLMs.
+A Node.js client for the Model Context Protocol (MCP) that integrates with remote MCP servers to provide tools for LLMs.
 
 ## Features
 
-- Support for multiple external MCP servers
-- Child process (stdio) and HTTP transport options
+- Support for multiple remote MCP servers
+- HTTP transport for server communication
 - Tool discovery and integration with Claude AI
 - Configurable server integration through JSON
-- Automatic cleanup and error handling
+- Automatic error handling and retries
 
 ## Setup
 
@@ -35,14 +35,13 @@ ANTHROPIC_API_KEY=your_api_key_here
 
 Replace `your_api_key_here` with your actual Anthropic API key.
 
-4. Create a `servers-config.json` file in the root directory to configure your MCP servers:
+4. Create a `servers-config.json` file in the root directory to configure your remote MCP servers:
 
 ```json
 {
   "mcpServers": {
     "weather": {
-      "command": "node",
-      "args": ["/absolute/path/to/your/weather-mcp/dist/index.js"]
+      "url": "https://your-weather-mcp-server.com"
     }
   }
 }
@@ -60,44 +59,20 @@ npm start
 
 This will:
 - Start the API server on port 3000 (or the port specified in your .env file)
-- Automatically connect to configured MCP servers when needed
+- Automatically connect to configured remote MCP servers when needed
 
-### Configuring MCP servers
+### Configuring Remote MCP Servers
 
-This project supports integrating with external MCP servers, such as the [weather-mcp](https://github.com/nakamurau1/weather-mcp) server.
-
-#### Configuration with servers-config.json
-
-Configure external MCP servers using a `servers-config.json` file in the project root:
+This project supports integrating with remote MCP servers. You can configure them using a `servers-config.json` file in the project root:
 
 ```json
 {
   "mcpServers": {
     "weather": {
-      "command": "node",
-      "args": ["/absolute/path/to/your/weather-mcp/dist/index.js"]
-    }
-  }
-}
-```
-
-This configuration will automatically:
-1. Launch the MCP server as a child process when needed
-2. Communicate with it using stdio transport
-3. Make the server's tools available to the client
-
-You can add multiple servers to the configuration:
-
-```json
-{
-  "mcpServers": {
-    "weather": {
-      "command": "node",
-      "args": ["/absolute/path/to/your/weather-mcp/dist/index.js"]
+      "url": "https://your-weather-mcp-server.com"
     },
     "notion": {
-      "command": "python",
-      "args": ["-m", "notion_mcp.server"]
+      "url": "https://your-notion-mcp-server.com"
     }
   }
 }
@@ -105,56 +80,162 @@ You can add multiple servers to the configuration:
 
 For each server, tools will be prefixed with the server name to avoid conflicts (e.g., `weather_getWeather`).
 
-#### Setting up the weather-mcp server
+## API Endpoints
 
-If you want to use the weather-mcp server:
-
-1. Clone the repository:
-
-```bash
-git clone https://github.com/nakamurau1/weather-mcp.git
-cd weather-mcp
+### Health Check
+```http
+GET /
 ```
+Returns the current status of the API and available MCP servers.
 
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Build the server:
-
-```bash
-npm run build
-```
-
-4. Configure the path in your `servers-config.json` file:
-
+Response:
 ```json
 {
+  "status": "ok",
   "mcpServers": {
-    "weather": {
-      "command": "node",
-      "args": ["/absolute/path/to/your/weather-mcp/dist/index.js"]
+    "server-name": {
+      "url": "http://localhost:3000",
+      "command": "node server.js",
+      "args": ["--port", "3000"]
     }
   }
 }
 ```
 
-5. The server will be started automatically when needed.
+### Process Query
+```http
+POST /api/query
+```
+Process a user query using available MCP tools and Claude AI.
 
-### Testing the API
+Request body:
+```json
+{
+  "query": "What is the weather in New York?",
+  "conversationId": "optional-conversation-id",
+  "userId": "optional-user-id",
+  "userEmail": "optional-user-email",
+  "queryTimeoutMs": 30000,
+  "llm_answer": false
+}
+```
 
-You can test the API with curl:
+Response:
+```json
+{
+  "query": "What is the weather in New York?",
+  "answer": "The AI's response here",
+  "conversationId": "conv-123456789",
+  "userId": "user-123",
+  "needsClarification": false,
+  "noAnswer": false,
+  "error": false,
+  "toolResponses": [
+    {
+      "tool": "weather_getWeather",
+      "input": { "location": "New York" },
+      "response": "The current temperature is 72°F with sunny conditions.",
+      "server": "weather"
+    }
+  ]
+}
+```
+
+Available parameters:
+- `query` (required): The user's question or request
+- `conversationId` (optional): ID to maintain conversation context. If not provided, a new conversation will be created
+- `userId` (optional): ID of the user making the request
+- `userEmail` (optional): Email of the user, used for calendar-related tools
+- `queryTimeoutMs` (optional): Maximum time in milliseconds to wait for a response. Defaults to 30000ms (30 seconds)
+- `llm_answer` (optional): Whether to generate a final answer using Claude. If false, only tool responses will be returned. Defaults to false.
+
+The API will return a JSON response with:
+- `query`: The original query
+- `answer`: The AI's response (null if llm_answer is false)
+- `conversationId`: The ID of the conversation (new or existing)
+- `userId`: The ID of the user (if provided)
+- `needsClarification`: Boolean indicating if the AI needs more information
+- `noAnswer`: Boolean indicating if the AI cannot answer the query with available tools
+- `error`: Boolean indicating if an error occurred
+- `toolResponses`: Array of tool responses, each containing:
+  - `tool`: The name of the tool that was called
+  - `input`: The input parameters passed to the tool
+  - `response`: The response from the tool
+  - `server`: The name of the MCP server that provided the tool
+  - `error`: Boolean indicating if the tool call failed (only present if true)
+
+### Get User Conversations
+```http
+GET /api/conversations/:userId
+```
+Retrieves all conversations for a specific user.
+
+Parameters:
+- `userId` (path parameter): The ID of the user
+
+Response:
+```json
+{
+  "userId": "user-123",
+  "conversations": [
+    {
+      "conversationId": "conv-123456789",
+      "firstMessage": "What is the weather in New York?",
+      "lastMessage": "The current temperature is 72°F with sunny conditions.",
+      "messageCount": 4
+    }
+  ]
+}
+```
+
+### Clear Conversation
+```http
+DELETE /api/conversation/:conversationId
+```
+Clears a specific conversation.
+
+Parameters:
+- `conversationId` (path parameter): The ID of the conversation to clear
+
+Response:
+```json
+{
+  "success": true,
+  "message": "Conversation conv-123456789 cleared successfully"
+}
+```
+
+### Clear User Conversations
+```http
+DELETE /api/conversations/:userId
+```
+Clears all conversations for a specific user.
+
+Parameters:
+- `userId` (path parameter): The ID of the user
+
+Response:
+```json
+{
+  "success": true,
+  "message": "All conversations for user user-123 cleared successfully"
+}
+```
+
+## Testing the API
+
+You can test the API using curl:
 
 ```bash
 curl -X POST http://localhost:3000/api/query \
   -H "Content-Type: application/json" \
-  -d '{"query": "What is the weather in New York?"}'
+  -d '{
+    "query": "What is the weather in New York?",
+    "llm_answer": false
+  }'
 ```
 
 Or use the included demo:
-
 ```bash
 node demo.js
 ```
@@ -169,7 +250,7 @@ node demo.js
 
 The client includes several error handling mechanisms:
 - Retry mechanism for connection failures
-- Proper cleanup of resource on process exit
+- Proper cleanup of resources
 - Detailed logging for debugging
 
 ## License
