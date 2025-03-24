@@ -14,7 +14,7 @@ A Node.js client for the Model Context Protocol (MCP) that integrates with remot
 
 ### Prerequisites
 
-- Node.js 18.x or higher
+- Node.js 20.x or higher
 - npm
 
 ### Installation
