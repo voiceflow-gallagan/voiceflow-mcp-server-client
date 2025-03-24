@@ -1,7 +1,7 @@
 {
   "name": "voiceflow-mcp-server-client",
   "version": "1.0.0",
-  "description": "MCP client and server for processing queries",
+  "description": "MCP client for Voiceflow Agent",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -18,9 +18,15 @@
     "claude",
     "anthropic",
     "weather",
-    "api"
+    "api",
+    "voiceflow",
+    "mcp-client",
+    "mcp-server",
+    "voiceflow-mcp-server-client",
+    "agent step",
+    "agent step mcp"
   ],
-  "author": "",
+  "author": "NiKo | Voiceflow",
   "license": "ISC",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
