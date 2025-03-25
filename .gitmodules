@@ -1,0 +1,6 @@
+[submodule "mcp-servers/google-calendar-mcp"]
+	path = mcp-servers/google-calendar-mcp
+	url = https://github.com/nspady/google-calendar-mcp.git
+[submodule "mcp-servers/weather-mcp-server"]
+	path = mcp-servers/weather-mcp-server
+	url = https://github.com/szypetike/weather-mcp-server.git
