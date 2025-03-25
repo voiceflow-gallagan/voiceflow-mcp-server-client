@@ -15,8 +15,9 @@
     "standalone": "node test-api.js --standalone",
     "test:tools": "node test.js",
     "test:api": "node test-api.js",
+    "setup:oauth": "node scripts/setup-oauth.js",
     "build:weather-server": "cd mcp-servers/weather-mcp-server && npm install && npm run build",
-    "build:google-calendar": "cd mcp-servers/google-calendar-mcp && npm install && npm run build",
+    "build:google-calendar": "npm run setup:oauth && cd mcp-servers/google-calendar-mcp && npm install && npm run build",
     "build:mcp-servers": "npm run build:weather-server && npm run build:google-calendar",
     "build": "npm run build:mcp-servers"
   },

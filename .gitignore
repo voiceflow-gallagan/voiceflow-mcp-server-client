@@ -28,3 +28,7 @@ logs
 # Build output
 dist/
 build/
+
+# OAuth files
+mcp-servers/google-calendar-mcp/.gcp-saved-tokens.json
+mcp-servers/google-calendar-mcp/gcp-oauth.keys.json
