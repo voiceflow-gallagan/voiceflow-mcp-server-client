@@ -7,15 +7,25 @@
         "@modelcontextprotocol/server-brave-search"
       ],
       "env": {
-        "BRAVE_API_KEY": "BSARUGDDpsn8dtQSnLEQUqsAE7o3RJH"
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
       }
     },
     "time-mcp": {
       "command": "npx",
       "args": ["-y", "time-mcp"]
     },
-    "zapier-actions-mcp": {
-      "url": "https://actions.zapier.com/mcp/sk-ak-Xz99Gjy01cUKxgZ6CmzapN5Q9E/sse"
+    "weather-server": {
+      "command": "node",
+      "args": ["mcp-servers/weather-mcp-server/build/index.js"],
+      "env": {
+        "OPENWEATHER_API_KEY": "${OPENWEATHER_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "google-calendar": {
+      "command": "node",
+      "args": ["./mcp-servers/google-calendar-mcp/build/index.js"]
     }
   }
 }

@@ -412,12 +412,12 @@ async function processQuery({
       let userInstruction = ''
       // Add calendar-specific instructions if we have a user email
       if (context.userEmail) {
-        userInstruction = `For Calendar related tools, use ${context.userEmail} as the target user. `
+        userInstruction = `For Calendar related tools, use ${context.userEmail} as the target user.`
       }
 
       context.messages.push({
         role: 'user',
-        content: `${query}\n\n${userInstruction}Try to answer using the available tools. If you need clarification, respond with #CLARIFY# followed by your question. If you cannot answer with available tools, respond with #NOANSWER#.`,
+        content: `${query}\n\n${userInstruction} Try to answer using the available tools. If you need clarification, respond with #CLARIFY# followed by your question. If you cannot answer with available tools, respond with #NOANSWER#.`,
       })
 
       // Call Claude with the conversation history
