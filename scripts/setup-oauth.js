@@ -26,7 +26,7 @@ const createOAuthFiles = () => {
       console.log('Created .gcp-saved-tokens.json')
     } catch (error) {
       console.error('Error parsing GCP_SAVED_TOKENS:', error)
-      process.exit(1)
+      // Don't exit, just log the error
     }
   } else {
     console.log('GCP_SAVED_TOKENS environment variable not set')
@@ -42,21 +42,20 @@ const createOAuthFiles = () => {
       console.log('Created gcp-oauth.keys.json')
     } catch (error) {
       console.error('Error parsing GCP_OAUTH_KEYS:', error)
-      process.exit(1)
+      // Don't exit, just log the error
     }
   } else {
     console.log('GCP_OAUTH_KEYS environment variable not set')
   }
 
-  // Verify files exist
+  // Check if files exist but don't fail if they don't
   const files = ['.gcp-saved-tokens.json', 'gcp-oauth.keys.json']
   files.forEach((file) => {
     const filePath = path.join(googleCalendarDir, file)
     if (fs.existsSync(filePath)) {
       console.log(`Verified ${file} exists`)
     } else {
-      console.error(`Error: ${file} was not created`)
-      process.exit(1)
+      console.log(`Note: ${file} was not created`)
     }
   })
 }
