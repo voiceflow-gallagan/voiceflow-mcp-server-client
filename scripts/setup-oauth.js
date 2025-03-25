@@ -8,38 +8,57 @@ const createOAuthFiles = () => {
     'google-calendar-mcp'
   )
 
+  console.log('Creating OAuth files in:', googleCalendarDir)
+
   // Create directory if it doesn't exist
   if (!fs.existsSync(googleCalendarDir)) {
+    console.log('Creating directory:', googleCalendarDir)
     fs.mkdirSync(googleCalendarDir, { recursive: true })
   }
 
   // Handle saved tokens
   if (process.env.GCP_SAVED_TOKENS) {
     try {
+      console.log('Processing GCP_SAVED_TOKENS...')
       const tokens = JSON.parse(process.env.GCP_SAVED_TOKENS)
-      fs.writeFileSync(
-        path.join(googleCalendarDir, '.gcp-saved-tokens.json'),
-        JSON.stringify(tokens, null, 2)
-      )
+      const tokensPath = path.join(googleCalendarDir, '.gcp-saved-tokens.json')
+      fs.writeFileSync(tokensPath, JSON.stringify(tokens, null, 2))
+      console.log('Created .gcp-saved-tokens.json')
     } catch (error) {
       console.error('Error parsing GCP_SAVED_TOKENS:', error)
       process.exit(1)
     }
+  } else {
+    console.log('GCP_SAVED_TOKENS environment variable not set')
   }
 
   // Handle OAuth keys
   if (process.env.GCP_OAUTH_KEYS) {
     try {
+      console.log('Processing GCP_OAUTH_KEYS...')
       const keys = JSON.parse(process.env.GCP_OAUTH_KEYS)
-      fs.writeFileSync(
-        path.join(googleCalendarDir, 'gcp-oauth.keys.json'),
-        JSON.stringify(keys, null, 2)
-      )
+      const keysPath = path.join(googleCalendarDir, 'gcp-oauth.keys.json')
+      fs.writeFileSync(keysPath, JSON.stringify(keys, null, 2))
+      console.log('Created gcp-oauth.keys.json')
     } catch (error) {
       console.error('Error parsing GCP_OAUTH_KEYS:', error)
       process.exit(1)
     }
+  } else {
+    console.log('GCP_OAUTH_KEYS environment variable not set')
   }
+
+  // Verify files exist
+  const files = ['.gcp-saved-tokens.json', 'gcp-oauth.keys.json']
+  files.forEach((file) => {
+    const filePath = path.join(googleCalendarDir, file)
+    if (fs.existsSync(filePath)) {
+      console.log(`Verified ${file} exists`)
+    } else {
+      console.error(`Error: ${file} was not created`)
+      process.exit(1)
+    }
+  })
 }
 
 createOAuthFiles()
