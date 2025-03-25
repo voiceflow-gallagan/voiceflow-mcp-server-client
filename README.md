@@ -45,6 +45,29 @@ npm install
    - `PORT`: The port number for the server (default: 3000)
    - `BRAVE_API_KEY`: Your Brave Search API key for search functionality
 
+### Google Calendar Setup
+
+To use the Google Calendar MCP server, you need to set up OAuth 2.0 credentials and add them to your environment variables:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Enable the Google Calendar API
+4. Create OAuth 2.0 credentials:
+   - Go to "APIs & Services" > "Credentials"
+   - Click "Create Credentials" > "OAuth client ID"
+   - Choose "Desktop app" as the application type
+   - Download the client configuration file
+
+5. Add these environment variables to your `.env` file:
+   ```
+   GCP_SAVED_TOKENS={"access_token":"your-access-token","scope":"https://www.googleapis.com/auth/calendar","token_type":"Bearer","expiry_date":1234567890,"refresh_token":"your-refresh-token"}
+   GCP_OAUTH_KEYS={"installed":{"client_id":"your-client-id","project_id":"your-project-id","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"your-client-secret","redirect_uris":["http://localhost"]}}
+   ```
+
+   Note: The values should be the entire JSON content as a single line. You can get these values from:
+   - `GCP_SAVED_TOKENS`: After the first OAuth flow, the tokens will be saved in `.gcp-saved-tokens.json`
+   - `GCP_OAUTH_KEYS`: From the downloaded client configuration file
+
 4. Create a `servers-config.json` file in the root directory to configure your remote MCP servers:
 
 ```json

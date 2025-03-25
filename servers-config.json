@@ -1,5 +1,12 @@
 {
   "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--headless"
+      ]
+    },
     "brave-search": {
       "command": "npx",
       "args": [
