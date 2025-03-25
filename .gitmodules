@@ -4,6 +4,3 @@
 [submodule "mcp-servers/weather-mcp-server"]
 	path = mcp-servers/weather-mcp-server
 	url = https://github.com/szypetike/weather-mcp-server.git
-[submodule "mcp-servers/playwright-mcp"]
-	path = mcp-servers/playwright-mcp
-	url = https://github.com/microsoft/playwright-mcp.git

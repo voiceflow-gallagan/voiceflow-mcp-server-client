@@ -15,9 +15,10 @@
     "standalone": "node test-api.js --standalone",
     "test:tools": "node test.js",
     "test:api": "node test-api.js",
+    "setup:playwright": "npx playwright install chromium --yes",
     "build:weather-server": "cd mcp-servers/weather-mcp-server && npm install && npm run build",
     "build:google-calendar": "cd mcp-servers/google-calendar-mcp && npm install && npm run build",
-    "build:mcp-servers": "npm run build:weather-server && npm run build:google-calendar",
+    "build:mcp-servers": "npm run setup:playwright && npm run build:weather-server && npm run build:google-calendar",
     "build": "npm run build:mcp-servers"
   },
   "keywords": [
