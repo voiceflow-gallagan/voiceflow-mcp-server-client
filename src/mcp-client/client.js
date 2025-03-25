@@ -145,7 +145,7 @@ async function createMCPClient(serverName, retryCount = 0, maxRetries = 3) {
     }
 
     // Connect the client with a timeout
-    const connectTimeoutMs = serverConfig.url ? 30000 : 15000 // Longer timeout for SSE connections
+    const connectTimeoutMs = serverConfig.url ? 45000 : 30000 // Longer timeout for SSE connections
     const connectPromise = client.connect(transport)
     const timeoutPromise = new Promise((_, reject) => {
       setTimeout(
