@@ -4,6 +4,7 @@ import {
   clearConversation,
   getUserConversations,
   clearUserConversations,
+  getServerActions,
 } from '../mcp-client/client.js'
 
 const router = express.Router()
@@ -142,6 +143,23 @@ router.delete('/conversations/:userId', async (req, res) => {
     console.error('API error:', error)
     res.status(500).json({
       error: 'Failed to clear user conversations',
+      message: error.message,
+    })
+  }
+})
+
+// GET endpoint to retrieve available servers and their actions
+router.get('/servers', async (req, res) => {
+  try {
+    const servers = await getServerActions()
+    res.json({
+      success: true,
+      servers,
+    })
+  } catch (error) {
+    console.error('API error:', error)
+    res.status(500).json({
+      error: 'Failed to retrieve server actions',
       message: error.message,
     })
   }

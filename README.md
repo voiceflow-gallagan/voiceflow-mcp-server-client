@@ -255,6 +255,71 @@ Response:
 }
 ```
 
+### Get Available Servers
+```http
+GET /api/servers
+```
+Retrieves information about all configured MCP servers and their available actions.
+
+Response:
+```json
+{
+  "success": true,
+  "servers": {
+    "weather-server": {
+      "name": "weather-server",
+      "actions": [
+        {
+          "name": "getWeather",
+          "description": "Get current weather for a location",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "location": {
+                "type": "string",
+                "description": "City name or location"
+              }
+            },
+            "required": ["location"]
+          }
+        }
+      ],
+      "enabled": true
+    },
+    "google-calendar": {
+      "name": "google-calendar",
+      "actions": [
+        {
+          "name": "listEvents",
+          "description": "List calendar events",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "maxResults": {
+                "type": "number",
+                "description": "Maximum number of events to return"
+              }
+            }
+          }
+        }
+      ],
+      "enabled": true
+    }
+  }
+}
+```
+
+The response includes:
+- `success`: Boolean indicating if the request was successful
+- `servers`: Object containing information about each configured server:
+  - `name`: The server's name
+  - `actions`: Array of available actions for the server, each containing:
+    - `name`: The action name
+    - `description`: Description of what the action does
+    - `inputSchema`: JSON Schema describing the expected input parameters
+  - `enabled`: Boolean indicating if the server is enabled
+  - `error`: Error message (only present if the server failed to provide its actions)
+
 ## Testing the API
 
 You can test the API using curl:

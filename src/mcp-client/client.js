@@ -1000,9 +1000,49 @@ function clearUserConversations(userId) {
   return deleted > 0
 }
 
+// Get available servers and their actions
+async function getServerActions() {
+  const servers = {}
+
+  // Define schema for validating tool list responses
+  const ListToolsResultSchema = z.object({
+    tools: z.array(z.any()),
+  })
+
+  for (const serverName of Object.keys(config.mcpServers)) {
+    try {
+      const client = await createMCPClient(serverName)
+      const toolsResponse = await client.request(
+        { method: 'tools/list' },
+        ListToolsResultSchema
+      )
+
+      servers[serverName] = {
+        name: serverName,
+        actions: toolsResponse.tools.map((tool) => ({
+          name: tool.name,
+          description: tool.description,
+          inputSchema: tool.inputSchema,
+        })),
+        enabled: !config.mcpServers[serverName].disabled,
+      }
+    } catch (error) {
+      console.error(`Failed to get actions for server ${serverName}:`, error)
+      servers[serverName] = {
+        name: serverName,
+        error: error.message,
+        enabled: !config.mcpServers[serverName].disabled,
+      }
+    }
+  }
+
+  return servers
+}
+
 export {
   processQuery,
-  clearConversation,
   getUserConversations,
+  clearConversation,
   clearUserConversations,
+  getServerActions,
 }
