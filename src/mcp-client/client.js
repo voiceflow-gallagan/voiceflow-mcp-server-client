@@ -242,6 +242,7 @@ async function processQuery({
   userEmail = null,
   queryTimeoutMs = 30000, // 30s timeout for the entire query
   llm_answer = false, // Whether to generate an LLM answer from tool responses
+  lastResponseOnly = false, // Whether to return only the last tool response
 }) {
   // Create a promise that will reject after the timeout
   const queryTimeout = new Promise((_, reject) => {
@@ -689,13 +690,19 @@ async function processQuery({
         .replace(/#NOANSWER#/g, '')
         .trim()
 
+      // If lastResponseOnly is true, only return the last tool response
+      let finalToolResponses = toolResponses
+      if (config.lastResponseOnly && toolResponses.length > 0) {
+        finalToolResponses = [toolResponses[toolResponses.length - 1]]
+      }
+
       return {
         response: cleanResponse,
         conversationId,
         userId: context.userId,
         needsClarification,
         noAnswer,
-        toolResponses,
+        toolResponses: finalToolResponses,
       }
     } catch (error) {
       console.error('Error processing query:', error)

@@ -37,6 +37,7 @@ npm install
    CLAUDE_MODEL=claude-3-5-sonnet-20241022
    PORT=3000
    BRAVE_API_KEY=your-brave-api-key
+   LAST_RESPONSE_ONLY=false
    ```
 
    Required environment variables:
@@ -44,6 +45,7 @@ npm install
    - `CLAUDE_MODEL`: The Claude model to use (default: claude-3-5-sonnet-20241022)
    - `PORT`: The port number for the server (default: 3000)
    - `BRAVE_API_KEY`: Your Brave Search API key for search functionality
+   - `LAST_RESPONSE_ONLY`: When set to "true", only the last tool response will be returned in the API response (default: false)
 
 ### Google Calendar Setup
 
@@ -169,6 +171,20 @@ Response:
       "input": { "location": "New York" },
       "response": "The current temperature is 72°F with sunny conditions.",
       "server": "weather"
+    }
+  ]
+}
+```
+
+When `LAST_RESPONSE_ONLY=true` is set in the environment, only the last tool response will be returned. For example, if multiple tools are called:
+```json
+{
+  "toolResponses": [
+    {
+      "tool": "time_getTime",
+      "input": { "location": "New York" },
+      "response": "The current time is 2:30 PM EDT",
+      "server": "time"
     }
   ]
 }
