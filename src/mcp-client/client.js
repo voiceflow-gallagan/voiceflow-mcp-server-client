@@ -1074,6 +1074,12 @@ async function preloadServers() {
     tools: z.array(z.any()),
   })
 
+  // Get server discovery timeout from environment or use default
+  const serverDiscoveryTimeout = parseInt(
+    process.env.SERVER_DISCOVERY_TIMEOUT || '60000',
+    10
+  )
+
   // Track server status
   const serverStatus = {
     total: Object.keys(config.mcpServers).length,
@@ -1088,7 +1094,10 @@ async function preloadServers() {
       try {
         // Set a timeout for each server
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('Server discovery timeout')), 20000)
+          setTimeout(
+            () => reject(new Error('Server discovery timeout')),
+            serverDiscoveryTimeout
+          )
         })
 
         const discoveryPromise = (async () => {
