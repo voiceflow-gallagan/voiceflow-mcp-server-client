@@ -17,6 +17,15 @@ const cachedClients = new Map()
 // Store conversation contexts (key = conversationId)
 const conversationContexts = new Map()
 
+// Get max follow-up steps from environment or use default value
+const MAX_FOLLOWUP_STEPS = parseInt(process.env.MAX_FOLLOWUP_STEPS, 10) || 5
+// Special extended limit for playwright tools
+const PLAYWRIGHT_EXTENDED_STEPS =
+  parseInt(process.env.PLAYWRIGHT_EXTENDED_STEPS, 10) || 8
+console.log(
+  `Maximum follow-up steps configured: ${MAX_FOLLOWUP_STEPS} (regular), ${PLAYWRIGHT_EXTENDED_STEPS} (playwright)`
+)
+
 // Function to dynamically configure servers based on environment variables
 function configureDynamicServers() {
   // Check for Zapier MCP URL in environment
@@ -260,33 +269,82 @@ function limitConversationHistory(messages) {
   // Always keep the system message (first message)
   const systemMessage = messages[0]
 
-  // Keep the most recent messages, but ensure we don't exceed maxMessages
-  const recentMessages = messages.slice(-maxMessages + 1)
+  // Create a map to store tool call IDs and their corresponding messages
+  const toolCallMap = new Map()
 
-  // If we have tool results in the recent messages, try to keep their corresponding tool calls
-  const toolCallIds = new Set()
-  recentMessages.forEach((msg) => {
-    if (msg.role === 'user' && Array.isArray(msg.content)) {
+  // First pass: collect all tool calls and their results
+  messages.forEach((msg, index) => {
+    if (msg.role === 'assistant' && Array.isArray(msg.content)) {
+      msg.content.forEach((content) => {
+        if (content.type === 'tool_use') {
+          toolCallMap.set(content.id, {
+            toolCall: msg,
+            toolCallIndex: index,
+            result: null,
+            resultIndex: null,
+          })
+        }
+      })
+    } else if (msg.role === 'user' && Array.isArray(msg.content)) {
       msg.content.forEach((content) => {
         if (content.type === 'tool_result') {
-          toolCallIds.add(content.tool_use_id)
+          const toolCall = toolCallMap.get(content.tool_use_id)
+          if (toolCall) {
+            toolCall.result = msg
+            toolCall.resultIndex = index
+          }
         }
       })
     }
   })
 
-  // Find the corresponding tool calls and keep them
-  const toolCalls = messages.filter((msg) => {
-    if (msg.role === 'assistant' && Array.isArray(msg.content)) {
-      return msg.content.some(
-        (content) => content.type === 'tool_use' && toolCallIds.has(content.id)
-      )
-    }
-    return false
+  // Keep the most recent messages, but ensure we don't exceed maxMessages
+  const recentMessages = messages.slice(-maxMessages + 1)
+
+  // Create a set of indices to keep
+  const indicesToKeep = new Set()
+
+  // Add system message index
+  indicesToKeep.add(0)
+
+  // Add indices for recent messages
+  recentMessages.forEach((_, index) => {
+    indicesToKeep.add(messages.length - recentMessages.length + index)
   })
 
-  // Combine system message, tool calls, and recent messages
-  return [systemMessage, ...toolCalls, ...recentMessages]
+  // Add indices for complete tool call/result pairs
+  for (const [_, toolCallData] of toolCallMap) {
+    if (toolCallData.result) {
+      // Always keep paired tool call and tool result messages together
+      indicesToKeep.add(toolCallData.toolCallIndex)
+      indicesToKeep.add(toolCallData.resultIndex)
+    }
+  }
+
+  // Convert indices to array and sort
+  const sortedIndices = Array.from(indicesToKeep).sort((a, b) => a - b)
+
+  // Create new messages array with only the kept messages
+  return sortedIndices.map((index) => messages[index])
+}
+
+// Function to truncate large tool responses
+function truncateToolResponse(response, maxLength = 1000) {
+  if (typeof response === 'string' && response.length > maxLength) {
+    // For very large responses, use more aggressive truncation
+    if (response.length > maxLength * 5) {
+      const firstSection = response.substring(0, Math.floor(maxLength * 0.7))
+      const lastSection = response.substring(
+        response.length - Math.floor(maxLength * 0.3)
+      )
+      return `${firstSection}... [${
+        response.length - maxLength
+      } characters truncated] ...${lastSection}`
+    }
+    // For moderately large responses, simple truncation
+    return response.substring(0, maxLength) + '... (response truncated)'
+  }
+  return response
 }
 
 // Process a query using Claude and available MCP tools
@@ -295,7 +353,7 @@ async function processQuery({
   conversationId = null,
   userId = null,
   userEmail = null,
-  queryTimeoutMs = 40000, // 30s timeout for the entire query
+  queryTimeoutMs = 120000, // 120s timeout for the entire query
   llm_answer = false, // Whether to generate an LLM answer from tool responses
   lastResponseOnly = false, // Whether to return only the last tool response
 }) {
@@ -493,6 +551,18 @@ async function processQuery({
         userInstruction = `For Calendar related tools, use ${context.userEmail} as the target user.`
       }
 
+      // Check if the query might involve web browsing or Playwright
+      const isPlaywrightQuery =
+        query.toLowerCase().includes('website') ||
+        query.toLowerCase().includes('browser') ||
+        query.toLowerCase().includes('web page') ||
+        query.toLowerCase().includes('playwright')
+
+      // Add special instructions for playwright-related queries
+      if (isPlaywrightQuery) {
+        userInstruction += ` When using playwright tools, keep responses concise and avoid requesting too many browser snapshots in a row.`
+      }
+
       context.messages.push({
         role: 'user',
         content: `${query}\n\n${userInstruction} Try to answer using the available tools. If you need clarification, respond with #CLARIFY# followed by your question. If you cannot answer with available tools, respond with #NOANSWER#.`,
@@ -501,7 +571,7 @@ async function processQuery({
       // Call Claude with the conversation history
       const response = await anthropic.messages.create({
         model: config.claudeModel,
-        max_tokens: 2000,
+        max_tokens: 20000,
         messages: context.messages,
         tools: context.formattedTools,
       })
@@ -519,6 +589,11 @@ async function processQuery({
           (item) => item.type === 'tool_use'
         )
 
+        // Check if this contains playwright tools
+        const containsPlaywrightTool = toolUsages.some(
+          (item) => item.name && item.name.includes('playwright')
+        )
+
         // Add assistant's initial response with tool calls to context
         context.messages.push({
           role: 'assistant',
@@ -529,6 +604,7 @@ async function processQuery({
         for (const contentItem of toolUsages) {
           const toolCall = contentItem.input
           const toolName = contentItem.name
+          const toolUseId = contentItem.id
 
           console.log(`Tool call requested: ${toolName} with input:`, toolCall)
 
@@ -610,11 +686,23 @@ async function processQuery({
 
             console.log('Tool response:', toolResponse)
 
+            // Handle response text, with special handling for playwright tools
+            let responseText = toolResponse.content[0].text
+
+            if (toolName.includes('playwright')) {
+              // More aggressive truncation for playwright responses (300 chars for first call)
+              responseText = truncateToolResponse(responseText, 300)
+            } else {
+              responseText = config.truncateToolResponses
+                ? truncateToolResponse(responseText)
+                : responseText
+            }
+
             // Store tool response
             toolResponses.push({
               tool: toolName,
               input: toolCall,
-              response: toolResponse.content[0].text,
+              response: responseText,
               server: originalServerName || context.primaryServer.name,
             })
 
@@ -624,8 +712,8 @@ async function processQuery({
               content: [
                 {
                   type: 'tool_result',
-                  tool_use_id: contentItem.id,
-                  content: toolResponse.content[0].text,
+                  tool_use_id: toolUseId,
+                  content: responseText,
                 },
               ],
             })
@@ -647,7 +735,7 @@ async function processQuery({
               content: [
                 {
                   type: 'tool_result',
-                  tool_use_id: contentItem.id,
+                  tool_use_id: toolUseId,
                   content: `Error calling tool: ${error.message}`,
                 },
               ],
@@ -655,33 +743,93 @@ async function processQuery({
           }
         }
 
-        // If llm_answer is false, return tool responses without generating a final answer
-        if (!llm_answer) {
-          // Process any follow-up tool calls before returning
-          const followUpResponse = await anthropic.messages.create({
-            model: config.claudeModel,
-            max_tokens: 2000,
-            messages: context.messages,
-            tools: context.formattedTools,
+        // If there are playwright tools involved, verify conversation history integrity
+        if (containsPlaywrightTool) {
+          // Make sure tool_use and tool_result are properly paired
+          const seenToolUses = new Set()
+
+          // Collect all tool_use IDs
+          context.messages.forEach((msg) => {
+            if (msg.role === 'assistant' && Array.isArray(msg.content)) {
+              msg.content.forEach((content) => {
+                if (content.type === 'tool_use') {
+                  seenToolUses.add(content.id)
+                }
+              })
+            }
           })
 
-          // If there are more tool calls, process them recursively
-          if (
-            followUpResponse.content.some((item) => item.type === 'tool_use')
-          ) {
-            console.log('Processing follow-up tool calls before returning')
-            const followUpResult = await processFollowUpToolCalls(
-              context,
-              followUpResponse,
-              context.formattedTools,
-              config.claudeModel
-            )
+          // Filter out any tool_result without a matching tool_use
+          const verifiedMessages = context.messages.filter((msg) => {
+            if (msg.role === 'user' && Array.isArray(msg.content)) {
+              for (const content of msg.content) {
+                if (
+                  content.type === 'tool_result' &&
+                  !seenToolUses.has(content.tool_use_id)
+                ) {
+                  return false
+                }
+              }
+            }
+            return true
+          })
 
-            // Merge tool responses from follow-up calls
-            toolResponses = [
-              ...toolResponses,
-              ...(followUpResult.toolResponses || []),
-            ]
+          // Update context with verified messages
+          context.messages = verifiedMessages
+        }
+
+        // If llm_answer is false, return tool responses without generating a final answer
+        if (!llm_answer) {
+          try {
+            // Process any follow-up tool calls before returning
+            const followUpResponse = await anthropic.messages.create({
+              model: config.claudeModel,
+              max_tokens: 20000,
+              messages: context.messages,
+              tools: context.formattedTools,
+            })
+
+            // If there are more tool calls, process them recursively
+            if (
+              followUpResponse.content.some((item) => item.type === 'tool_use')
+            ) {
+              console.log('Processing follow-up tool calls before returning')
+
+              // Use the enhanced follow-up processing with better error handling
+              // Clone the context to avoid shared references
+              const clonedContext = {
+                ...context,
+                messages: JSON.parse(JSON.stringify(context.messages)),
+              }
+
+              // Track tool IDs across recursive calls
+              const toolIdMap = new Map()
+
+              // Initialize playwright state
+              const playwriteState = {}
+
+              const followUpResult = await processFollowUpToolCalls(
+                clonedContext,
+                followUpResponse,
+                context.formattedTools,
+                config.claudeModel,
+                0,
+                toolIdMap,
+                playwriteState
+              )
+
+              // Update the main context with messages from the follow-up
+              context.messages = clonedContext.messages
+
+              // Merge tool responses from follow-up calls
+              toolResponses = [
+                ...toolResponses,
+                ...(followUpResult.toolResponses || []),
+              ]
+            }
+          } catch (error) {
+            console.error('Error in follow-up processing:', error)
+            // Continue without follow-up processing
           }
 
           return {
@@ -695,48 +843,84 @@ async function processQuery({
         }
 
         // After processing all tools, get the final response from Claude
-        const finalFollowUpResponse = await anthropic.messages.create({
-          model: config.claudeModel,
-          max_tokens: 2000,
-          messages: limitConversationHistory(context.messages), // Limit history before making the call
-          tools: context.formattedTools, // Keep tools available for potential follow-up calls
-        })
-
-        // Process the response
-        for (const followUpItem of finalFollowUpResponse.content) {
-          if (followUpItem.type === 'text') {
-            finalResponse += followUpItem.text
-          }
-        }
-
-        // Check if the follow-up response includes more tool calls
-        if (
-          finalFollowUpResponse.content.some((item) => item.type === 'tool_use')
-        ) {
-          console.log(
-            'Claude is requesting additional tool calls in the follow-up, processing them'
-          )
-
-          // Process follow-up tool calls recursively - add to existing context and continue until done
-          const recursiveResult = await processFollowUpToolCalls(
-            context,
-            finalFollowUpResponse,
-            context.formattedTools,
-            config.claudeModel
-          )
-
-          // Handle the recursive result structure
-          finalResponse = recursiveResult.response || ''
-          toolResponses = [
-            ...toolResponses,
-            ...(recursiveResult.toolResponses || []),
-          ]
-        } else {
-          // Add final response to context if no more tool calls
-          context.messages.push({
-            role: 'assistant',
-            content: finalFollowUpResponse.content,
+        try {
+          const finalFollowUpResponse = await anthropic.messages.create({
+            model: config.claudeModel,
+            max_tokens: 20000,
+            messages: limitConversationHistory(context.messages), // Limit history before making the call
+            tools: context.formattedTools, // Keep tools available for potential follow-up calls
           })
+
+          // Process the response
+          for (const followUpItem of finalFollowUpResponse.content) {
+            if (followUpItem.type === 'text') {
+              finalResponse += followUpItem.text
+            }
+          }
+
+          // Check if the follow-up response includes more tool calls
+          if (
+            finalFollowUpResponse.content.some(
+              (item) => item.type === 'tool_use'
+            )
+          ) {
+            console.log(
+              'Claude is requesting additional tool calls in the follow-up, processing them'
+            )
+
+            // Process follow-up tool calls recursively with better error handling
+            // Clone the context to avoid shared references
+            const clonedContext = {
+              ...context,
+              messages: JSON.parse(JSON.stringify(context.messages)),
+            }
+
+            // Track tool IDs across recursive calls
+            const toolIdMap = new Map()
+
+            // Initialize playwright state
+            const playwriteState = {}
+
+            const recursiveResult = await processFollowUpToolCalls(
+              clonedContext,
+              finalFollowUpResponse,
+              context.formattedTools,
+              config.claudeModel,
+              0,
+              toolIdMap,
+              playwriteState
+            )
+
+            // Update the main context with messages from the recursive calls
+            context.messages = clonedContext.messages
+
+            // Handle the recursive result structure
+            if (!recursiveResult.error) {
+              finalResponse = recursiveResult.response || ''
+            } else {
+              // If there was an error in recursive processing, use a fallback response
+              finalResponse =
+                recursiveResult.response ||
+                "I found some information but encountered an error processing it. Here's what I could gather."
+            }
+
+            toolResponses = [
+              ...toolResponses,
+              ...(recursiveResult.toolResponses || []),
+            ]
+          } else {
+            // Add final response to context if no more tool calls
+            context.messages.push({
+              role: 'assistant',
+              content: finalFollowUpResponse.content,
+            })
+          }
+        } catch (error) {
+          console.error('Error in final follow-up processing:', error)
+
+          // Fallback to a simple response without further tool calls
+          finalResponse =
+            'I found some information using the available tools, but encountered an error when processing the final response. Here are the tool results I was able to gather.'
         }
       } else {
         // No tool use, just return text response
@@ -835,26 +1019,68 @@ async function processFollowUpToolCalls(
   response,
   tools,
   model,
-  depth = 0
+  depth = 0,
+  toolIdMap = new Map(), // Track tool_use_ids across recursive calls
+  playwriteState = {} // Track state for playwright-specific logic
 ) {
+  // Check if this contains playwright tools to determine appropriate step limit
+  const containsPlaywrightTool = response.content.some(
+    (item) =>
+      item.type === 'tool_use' && item.name && item.name.includes('playwright')
+  )
+
+  // Use extended limit for playwright tools
+  const effectiveStepLimit = containsPlaywrightTool
+    ? PLAYWRIGHT_EXTENDED_STEPS
+    : MAX_FOLLOWUP_STEPS
+
   // Prevent infinite recursion
-  if (depth > 5) {
-    return "I've reached the maximum number of follow-up steps. Please continue with a new query."
+  if (depth > effectiveStepLimit) {
+    console.log(
+      `Reached maximum follow-up steps limit (${effectiveStepLimit}${
+        containsPlaywrightTool ? ' for playwright' : ''
+      })`
+    )
+    return {
+      response: `I've reached the maximum number of follow-up steps (${effectiveStepLimit}). Please continue with a new query or increase the ${
+        containsPlaywrightTool
+          ? 'PLAYWRIGHT_EXTENDED_STEPS'
+          : 'MAX_FOLLOWUP_STEPS'
+      } setting if needed.`,
+      toolResponses: [],
+    }
   }
 
   const toolUsages = response.content.filter((item) => item.type === 'tool_use')
   let toolResponses = []
 
   // Add assistant's response with tool calls to context
-  context.messages.push({
+  const assistantMessage = {
     role: 'assistant',
     content: response.content,
-  })
+  }
+  context.messages.push(assistantMessage)
+
+  // Initialize playwright state tracking if needed
+  if (containsPlaywrightTool && !playwriteState.initialized) {
+    playwriteState.initialized = true
+    playwriteState.pageDownCount = 0
+    playwriteState.lastContent = ''
+    playwriteState.unchangedContentCount = 0
+    playwriteState.articles = []
+  }
 
   // Process all tool calls in sequence
   for (const contentItem of toolUsages) {
     const toolCall = contentItem.input
     const toolName = contentItem.name
+    const toolUseId = contentItem.id
+
+    // Store tool_use_id in map for verification
+    toolIdMap.set(toolUseId, {
+      name: toolName,
+      messageIndex: context.messages.length - 1, // Index of the assistant message with this tool_use
+    })
 
     function sanitizeServerName(name) {
       return name.replace(/[^a-zA-Z0-9_-]/g, '_')
@@ -864,6 +1090,51 @@ async function processFollowUpToolCalls(
       `Follow-up tool call requested: ${toolName} with input:`,
       toolCall
     )
+
+    // Detect if we're repeating PageDown operations without new content
+    if (
+      containsPlaywrightTool &&
+      toolName === 'playwright_browser_press_key' &&
+      toolCall &&
+      toolCall.key === 'PageDown'
+    ) {
+      playwriteState.pageDownCount = (playwriteState.pageDownCount || 0) + 1
+
+      // If we've pressed PageDown too many times (5+), it's likely we're in a loop
+      if (playwriteState.pageDownCount > 5) {
+        console.log(
+          `Detected possible infinite PageDown loop (count: ${playwriteState.pageDownCount}). Breaking execution.`
+        )
+
+        // Add a forced stop response as a tool result
+        const stopResponse =
+          "I've pressed PageDown multiple times without finding the desired content. The article may not be available or might require a different approach. Let's try a more specific strategy."
+
+        toolResponses.push({
+          tool: toolName,
+          input: toolCall,
+          response: stopResponse,
+          server: 'playwright',
+          forced_stop: true,
+        })
+
+        // Add user message with tool result to context
+        const toolResultMessage = {
+          role: 'user',
+          content: [
+            {
+              type: 'tool_result',
+              tool_use_id: toolUseId,
+              content: stopResponse,
+            },
+          ],
+        }
+        context.messages.push(toolResultMessage)
+
+        // Skip the actual tool call and move to the next one
+        continue
+      }
+    }
 
     // Determine which server the tool belongs to
     let toolResponse
@@ -943,25 +1214,67 @@ async function processFollowUpToolCalls(
 
       console.log('Follow-up tool response:', toolResponse)
 
+      // Handle response text, with special handling for playwright tools
+      let responseText = toolResponse.content[0].text
+      if (toolName.includes('playwright')) {
+        // More aggressive truncation for playwright responses
+        responseText = truncateToolResponse(responseText, 500)
+
+        // Track content changes for detecting infinite scrolling loops
+        if (toolName === 'playwright_browser_get_page_content') {
+          // Compare with previous content to detect if we're seeing new information
+          if (playwriteState.lastContent) {
+            // If content is the same or very similar, increment counter
+            const contentSimilarity = similarityScore(
+              playwriteState.lastContent,
+              responseText
+            )
+            if (contentSimilarity > 0.9) {
+              playwriteState.unchangedContentCount++
+              console.log(
+                `Detected similar content (${contentSimilarity.toFixed(
+                  2
+                )}), unchanged count: ${playwriteState.unchangedContentCount}`
+              )
+
+              // If content hasn't changed significantly after multiple attempts, break the loop
+              if (playwriteState.unchangedContentCount >= 3) {
+                responseText +=
+                  "\n\nI've detected we're viewing similar content after multiple attempts. Let's try a different approach to find the articles."
+              }
+            } else {
+              // Reset counter if content changed
+              playwriteState.unchangedContentCount = 0
+            }
+          }
+          playwriteState.lastContent = responseText
+        }
+      } else {
+        responseText = config.truncateToolResponses
+          ? truncateToolResponse(responseText)
+          : responseText
+      }
+
       // Store tool response
       toolResponses.push({
         tool: toolName,
         input: toolCall,
-        response: toolResponse.content[0].text,
+        response: responseText,
         server: originalServerName || context.primaryServer.name,
       })
 
-      // Add user message with tool result to context
-      context.messages.push({
+      // Add user message with tool result to context immediately after the tool call
+      const toolResultMessage = {
         role: 'user',
         content: [
           {
             type: 'tool_result',
-            tool_use_id: contentItem.id,
-            content: toolResponse.content[0].text,
+            tool_use_id: toolUseId,
+            content: responseText,
           },
         ],
-      })
+      }
+      context.messages.push(toolResultMessage)
     } catch (error) {
       console.error(`Error calling follow-up tool ${originalToolName}:`, error)
 
@@ -975,65 +1288,267 @@ async function processFollowUpToolCalls(
       })
 
       // Add error as tool result
-      context.messages.push({
+      const errorResultMessage = {
         role: 'user',
         content: [
           {
             type: 'tool_result',
-            tool_use_id: contentItem.id,
+            tool_use_id: toolUseId,
             content: `Error calling tool: ${error.message}`,
           },
         ],
-      })
+      }
+      context.messages.push(errorResultMessage)
     }
   }
 
-  // After processing all tools, get another response
-  const followUpResponse = await anthropic.messages.create({
-    model: model,
-    max_tokens: 2000,
-    messages: limitConversationHistory(context.messages), // Limit history before making the call
-    tools: tools, // Keep tools available for potential additional follow-up calls
-  })
+  try {
+    // Special handling for playwright tool - more aggressive conversation history pruning
+    if (containsPlaywrightTool) {
+      // Limit conversation history more aggressively for playwright
+      // Keep only the most essential messages for context
+      const limitedMessages = limitConversationHistory(context.messages)
 
-  // If there are more tool calls, process them recursively
-  if (followUpResponse.content.some((item) => item.type === 'tool_use')) {
-    console.log(
-      `Additional tools requested in depth ${depth + 1}, processing recursively`
-    )
-    const recursiveResult = await processFollowUpToolCalls(
-      context,
-      followUpResponse,
-      tools,
-      model,
-      depth + 1
-    )
+      // Make sure context has exactly the right pairs of tool_use and tool_result
+      // by verifying each tool_result has its corresponding tool_use
+      const verifiedMessages = []
+      const seenToolUses = new Set()
 
-    // If the recursive result includes tool responses, merge them
-    if (Array.isArray(recursiveResult.toolResponses)) {
-      toolResponses = [...toolResponses, ...recursiveResult.toolResponses]
+      // First pass - collect all tool_use IDs
+      limitedMessages.forEach((msg) => {
+        if (msg.role === 'assistant' && Array.isArray(msg.content)) {
+          msg.content.forEach((content) => {
+            if (content.type === 'tool_use') {
+              seenToolUses.add(content.id)
+            }
+          })
+        }
+      })
+
+      // Second pass - only keep tool_results that have a matching tool_use
+      limitedMessages.forEach((msg) => {
+        let shouldKeep = true
+
+        if (msg.role === 'user' && Array.isArray(msg.content)) {
+          for (const content of msg.content) {
+            if (
+              content.type === 'tool_result' &&
+              !seenToolUses.has(content.tool_use_id)
+            ) {
+              // This tool_result references a tool_use we don't have - skip this message
+              shouldKeep = false
+              break
+            }
+          }
+        }
+
+        if (shouldKeep) {
+          verifiedMessages.push(msg)
+        }
+      })
+
+      // Update context with verified messages
+      context.messages = verifiedMessages
     }
 
+    // Check if we need to force-stop due to repeated scrolling with no new content
+    if (containsPlaywrightTool && playwriteState.unchangedContentCount >= 3) {
+      return {
+        response:
+          "I've been scrolling through the page but the content doesn't seem to be changing significantly. I'll summarize what I've found so far.",
+        toolResponses,
+      }
+    }
+
+    // After processing all tools, get another response
+    // Clone the context to avoid sharing references
+    const clonedContext = {
+      ...context,
+      messages: JSON.parse(JSON.stringify(context.messages)),
+    }
+
+    const followUpResponse = await anthropic.messages.create({
+      model: model,
+      max_tokens: 20000,
+      messages: clonedContext.messages,
+      tools: tools,
+    })
+
+    // If there are more tool calls, process them recursively
+    if (followUpResponse.content.some((item) => item.type === 'tool_use')) {
+      console.log(
+        `Additional tools requested in depth ${
+          depth + 1
+        }, processing recursively`
+      )
+
+      // Important: Create a new toolIdMap for the next recursive call,
+      // but include the existing mappings
+      const nextToolIdMap = new Map(toolIdMap)
+
+      const recursiveResult = await processFollowUpToolCalls(
+        clonedContext,
+        followUpResponse,
+        tools,
+        model,
+        depth + 1,
+        nextToolIdMap,
+        playwriteState // Pass the playwright state to maintain across recursive calls
+      )
+
+      // Update the original context with messages from recursive call
+      context.messages = clonedContext.messages
+
+      // If the recursive result includes tool responses, merge them
+      if (Array.isArray(recursiveResult.toolResponses)) {
+        toolResponses = [...toolResponses, ...recursiveResult.toolResponses]
+      }
+
+      return {
+        response: recursiveResult.response || '',
+        toolResponses,
+      }
+    }
+
+    // No more tool calls, add the final response to context
+    context.messages.push({
+      role: 'assistant',
+      content: followUpResponse.content,
+    })
+
+    // Return both the text response and tool responses
     return {
-      response: recursiveResult.response || '',
+      response: followUpResponse.content
+        .filter((item) => item.type === 'text')
+        .map((item) => item.text)
+        .join(''),
       toolResponses,
     }
+  } catch (error) {
+    console.error(
+      `Error in follow-up processing (depth ${depth}):`,
+      error.message
+    )
+
+    // If we get the "unexpected tool_use_id" error, we need to recover
+    if (error.message && error.message.includes('unexpected `tool_use_id`')) {
+      console.log('Recovering from tool_use_id mismatch error...')
+
+      // Create a simplified conversation without tool calls to recover
+      const recoveryMessages = [
+        context.messages[0], // System message
+        {
+          role: 'user',
+          content:
+            'I need to continue with the previous task. Please summarize what you found so far.',
+        },
+      ]
+
+      try {
+        const recoveryResponse = await anthropic.messages.create({
+          model: model,
+          max_tokens: 20000,
+          messages: recoveryMessages,
+          tools: [], // No tools in recovery mode
+        })
+
+        return {
+          response: recoveryResponse.content
+            .filter((item) => item.type === 'text')
+            .map((item) => item.text)
+            .join(''),
+          toolResponses,
+          recovered: true,
+        }
+      } catch (recoveryError) {
+        console.error('Recovery failed:', recoveryError)
+        return {
+          response:
+            "I encountered an error while processing tools. Let's try a different approach.",
+          toolResponses,
+          error: true,
+        }
+      }
+    }
+
+    // For other errors, return a simple error message
+    return {
+      response: `Error during tool processing: ${error.message}`,
+      toolResponses,
+      error: true,
+    }
+  }
+}
+
+// Helper function to calculate similarity between two strings
+function similarityScore(str1, str2) {
+  if (!str1 || !str2) return 0
+
+  // Use Levenshtein distance for strings that are roughly similar in length
+  const maxLength = Math.max(str1.length, str2.length)
+  if (maxLength <= 5000) {
+    return 1 - levenshteinDistance(str1, str2) / maxLength
   }
 
-  // No more tool calls, add the final response to context
-  context.messages.push({
-    role: 'assistant',
-    content: followUpResponse.content,
-  })
+  // For longer strings, use a simpler approach with sampling
+  return simpleSimilarity(str1, str2)
+}
 
-  // Return both the text response and tool responses
-  return {
-    response: followUpResponse.content
-      .filter((item) => item.type === 'text')
-      .map((item) => item.text)
-      .join(''),
-    toolResponses,
+// Function to calculate Levenshtein distance (for shorter strings)
+function levenshteinDistance(str1, str2) {
+  const len1 = str1.length
+  const len2 = str2.length
+  const matrix = Array(len1 + 1)
+    .fill()
+    .map(() => Array(len2 + 1).fill(0))
+
+  for (let i = 0; i <= len1; i++) {
+    matrix[i][0] = i
   }
+  for (let j = 0; j <= len2; j++) {
+    matrix[0][j] = j
+  }
+
+  for (let i = 1; i <= len1; i++) {
+    for (let j = 1; j <= len2; j++) {
+      const cost = str1[i - 1] === str2[j - 1] ? 0 : 1
+      matrix[i][j] = Math.min(
+        matrix[i - 1][j] + 1,
+        matrix[i][j - 1] + 1,
+        matrix[i - 1][j - 1] + cost
+      )
+    }
+  }
+
+  return matrix[len1][len2]
+}
+
+// Function for simple similarity comparison (for longer strings)
+function simpleSimilarity(str1, str2) {
+  // Sample portions of strings to compare
+  const sampleSize = 1000
+  const samples = 5
+  let similaritySum = 0
+
+  for (let i = 0; i < samples; i++) {
+    const position = Math.floor(
+      Math.random() * (Math.min(str1.length, str2.length) - sampleSize)
+    )
+    const sample1 = str1.substring(position, position + sampleSize)
+    const sample2 = str2.substring(position, position + sampleSize)
+
+    // Count matching characters
+    let matches = 0
+    for (let j = 0; j < sampleSize; j++) {
+      if (sample1[j] === sample2[j]) {
+        matches++
+      }
+    }
+
+    similaritySum += matches / sampleSize
+  }
+
+  return similaritySum / samples
 }
 
 // Function to get all conversations for a specific user

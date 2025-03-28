@@ -34,24 +34,41 @@ npm install
    - Update the `.env` file with your actual values:
    ```
    ANTHROPIC_API_KEY=your-anthropic-api-key
-   CLAUDE_MODEL=claude-3-5-sonnet-20241022
+   CLAUDE_MODEL=claude-3-7-sonnet-20250219
    PORT=3000
    BRAVE_API_KEY=your-brave-api-key
    LAST_RESPONSE_ONLY=false
-   SERVER_DISCOVERY_TIMEOUT=30000
+   SERVER_DISCOVERY_TIMEOUT=20000
    ZAPIER_MCP_URL=https://actions.zapier.com/mcp/your-api-key/sse
    MAX_CONVERSATION_HISTORY=10
+   TRUNCATE_TOOL_RESPONSES=false
+   GCP_SAVED_TOKENS={"access_token":"your-access-token","scope":"https://www.googleapis.com/auth/calendar","token_type":"Bearer","expiry_date":1234567890,"refresh_token":"your-refresh-token"}
+   GCP_OAUTH_KEYS={"installed":{"client_id":"your-client-id","project_id":"your-project-id","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"your-client-secret","redirect_uris":["http://localhost"]}}
    ```
 
    Required environment variables:
    - `ANTHROPIC_API_KEY`: Your Anthropic API key for Claude AI
-   - `CLAUDE_MODEL`: The Claude model to use (default: claude-3-5-sonnet-20241022)
+   - `CLAUDE_MODEL`: The Claude model to use (default: claude-3-7-sonnet-20250219)
    - `PORT`: The port number for the server (default: 3000)
    - `BRAVE_API_KEY`: Your Brave Search API key for search functionality
    - `LAST_RESPONSE_ONLY`: When set to "true", only the last tool response will be returned in the API response (default: false)
-   - `SERVER_DISCOVERY_TIMEOUT`: Maximum time in milliseconds to wait for server discovery (default: 60000ms)
+   - `SERVER_DISCOVERY_TIMEOUT`: Maximum time in milliseconds to wait for server discovery (default: 20000ms)
    - `ZAPIER_MCP_URL`: Optional URL for the Zapier MCP server (e.g., https://actions.zapier.com/mcp/your-api-key/sse)
    - `MAX_CONVERSATION_HISTORY`: Maximum number of messages to keep in conversation history (default: 10)
+   - `TRUNCATE_TOOL_RESPONSES`: Whether to truncate tool responses in the toolResponses array (default: false)
+     - When true, tool responses will be truncated to 1000 characters
+     - When false, full responses will be kept in toolResponses
+     - Note: Tool responses in the conversation context are always truncated to prevent token limit issues
+   - `MAX_FOLLOWUP_STEPS`: Maximum number of recursive tool calls allowed (default: 5)
+     - Higher values allow more complex tasks but may increase processing time
+     - Lower values prevent infinite loops but may limit task completion
+   - `PLAYWRIGHT_EXTENDED_STEPS`: Maximum number of recursive tool calls allowed for playwright tools (default: 8)
+     - Separate limit for web browsing tools which often require more steps
+     - Increase this value for complex web browsing scenarios
+
+   Optional environment variables:
+   - `GCP_SAVED_TOKENS`: Google Calendar OAuth tokens (optional)
+   - `GCP_OAUTH_KEYS`: Google Calendar OAuth credentials (optional)
 
 ### Dynamic Server Configuration
 

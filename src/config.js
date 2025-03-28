@@ -61,4 +61,5 @@ export default {
     process.env.MAX_CONVERSATION_HISTORY || '10',
     10
   ),
+  truncateToolResponses: process.env.TRUNCATE_TOOL_RESPONSES === 'true',
 }
