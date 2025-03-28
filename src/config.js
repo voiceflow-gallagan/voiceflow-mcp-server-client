@@ -53,7 +53,7 @@ export default {
   // MCP servers configuration from servers-config.json
   mcpServers,
   // Claude model to use, with fallback to the latest version
-  claudeModel: process.env.CLAUDE_MODEL || 'claude-3-5-sonnet-20241022',
+  claudeModel: process.env.CLAUDE_MODEL || 'claude-3-7-sonnet-20250219',
   // Whether to only return the last tool response
   lastResponseOnly: process.env.LAST_RESPONSE_ONLY === 'true',
 }

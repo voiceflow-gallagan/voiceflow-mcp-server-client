@@ -240,7 +240,7 @@ async function processQuery({
   conversationId = null,
   userId = null,
   userEmail = null,
-  queryTimeoutMs = 30000, // 30s timeout for the entire query
+  queryTimeoutMs = 40000, // 30s timeout for the entire query
   llm_answer = false, // Whether to generate an LLM answer from tool responses
   lastResponseOnly = false, // Whether to return only the last tool response
 }) {
@@ -296,95 +296,114 @@ async function processQuery({
       if (context.allTools.length === 0) {
         let primaryServer = null
 
-        // Define schema for validating tool list responses
-        const ListToolsResultSchema = z.object({
-          tools: z.array(z.any()),
-        })
+        // Check if we have preloaded tools in the cache
+        if (global.serverCache && global.serverCache.size > 0) {
+          console.log('Using preloaded tools from cache')
 
-        // Connect to and discover tools from all configured MCP servers
-        // Use Promise.allSettled to continue even if some servers fail
-        const serverPromises = Object.entries(config.mcpServers).map(
-          async ([serverName, serverConfig]) => {
-            try {
-              // Set a shorter timeout for individual server tool discovery
-              const serverTimeout = new Promise((_, reject) => {
-                setTimeout(
-                  () =>
-                    reject(
-                      new Error(`Server discovery timeout for ${serverName}`)
-                    ),
-                  15000
-                )
-              })
-
-              const discoveryPromise = (async () => {
-                try {
-                  const client = await createMCPClient(serverName, 0, 1) // Only 1 retry for initial discovery
-
-                  const toolsResponse = await client.request(
-                    { method: 'tools/list' },
-                    ListToolsResultSchema
-                  )
-
-                  console.log(
-                    `Available tools from ${serverName}:`,
-                    toolsResponse.tools
-                  )
-
-                  // Sanitize server name for use as a prefix
-                  const sanitizedServerName = sanitizeServerName(serverName)
-
-                  // Add server prefix to tool names to avoid conflicts
-                  const prefixedTools = toolsResponse.tools.map((tool) => ({
-                    ...tool,
-                    name: `${sanitizedServerName}_${tool.name}`,
-                    originalName: tool.name,
-                    serverName: serverName,
-                  }))
-
-                  return {
-                    serverName,
-                    client,
-                    tools: prefixedTools,
-                  }
-                } catch (error) {
-                  console.error(
-                    `Error during tool discovery for ${serverName}:`,
-                    error.message
-                  )
-                  throw error
-                }
-              })()
-
-              // Race the discovery against timeout
-              return await Promise.race([discoveryPromise, serverTimeout])
-            } catch (error) {
-              console.error(
-                `Error fetching tools from ${serverName}:`,
-                error.message
-              )
-              // Return null for failed servers
-              return null
-            }
-          }
-        )
-
-        // Wait for all server connections to settle (either fulfill or reject)
-        const results = await Promise.allSettled(serverPromises)
-
-        // Process successful results
-        for (const result of results) {
-          if (result.status === 'fulfilled' && result.value) {
-            // Save the first successful server as primary
+          // Get all tools and clients from cache
+          for (const [serverName, serverData] of global.serverCache.entries()) {
+            // Save the first server as primary
             if (!primaryServer) {
               primaryServer = {
-                name: result.value.serverName,
-                client: result.value.client,
+                name: serverName,
+                client: serverData.client,
               }
             }
 
             // Add tools from this server
-            context.allTools.push(...result.value.tools)
+            context.allTools.push(...serverData.tools)
+          }
+        } else {
+          // Fallback to original discovery logic if cache is empty
+          console.log(
+            'No preloaded tools found, discovering tools from servers'
+          )
+
+          // Connect to and discover tools from all configured MCP servers
+          // Use Promise.allSettled to continue even if some servers fail
+          const serverPromises = Object.entries(config.mcpServers).map(
+            async ([serverName, serverConfig]) => {
+              try {
+                // Set a shorter timeout for individual server tool discovery
+                const serverTimeout = new Promise((_, reject) => {
+                  setTimeout(
+                    () =>
+                      reject(
+                        new Error(`Server discovery timeout for ${serverName}`)
+                      ),
+                    15000
+                  )
+                })
+
+                const discoveryPromise = (async () => {
+                  try {
+                    const client = await createMCPClient(serverName, 0, 1) // Only 1 retry for initial discovery
+
+                    const toolsResponse = await client.request(
+                      { method: 'tools/list' },
+                      ListToolsResultSchema
+                    )
+
+                    /* console.log(
+                      `Available tools from ${serverName}:`,
+                      toolsResponse.tools
+                    ) */
+
+                    // Sanitize server name for use as a prefix
+                    const sanitizedServerName = sanitizeServerName(serverName)
+
+                    // Add server prefix to tool names to avoid conflicts
+                    const prefixedTools = toolsResponse.tools.map((tool) => ({
+                      ...tool,
+                      name: `${sanitizedServerName}_${tool.name}`,
+                      originalName: tool.name,
+                      serverName: serverName,
+                    }))
+
+                    return {
+                      serverName,
+                      client,
+                      tools: prefixedTools,
+                    }
+                  } catch (error) {
+                    console.error(
+                      `Error during tool discovery for ${serverName}:`,
+                      error.message
+                    )
+                    throw error
+                  }
+                })()
+
+                // Race the discovery against timeout
+                return await Promise.race([discoveryPromise, serverTimeout])
+              } catch (error) {
+                console.error(
+                  `Error fetching tools from ${serverName}:`,
+                  error.message
+                )
+                // Return null for failed servers
+                return null
+              }
+            }
+          )
+
+          // Wait for all server connections to settle (either fulfill or reject)
+          const results = await Promise.allSettled(serverPromises)
+
+          // Process successful results
+          for (const result of results) {
+            if (result.status === 'fulfilled' && result.value) {
+              // Save the first successful server as primary
+              if (!primaryServer) {
+                primaryServer = {
+                  name: result.value.serverName,
+                  client: result.value.client,
+                }
+              }
+
+              // Add tools from this server
+              context.allTools.push(...result.value.tools)
+            }
           }
         }
 
@@ -472,7 +491,7 @@ async function processQuery({
 
           // Check for the server prefix in the tool name
           const serverPrefix = toolName.split('_')[0]
-          console.log(`Extracted server prefix: "${serverPrefix}"`)
+          // console.log(`Extracted server prefix: "${serverPrefix}"`)
 
           // For tools with multiple underscores in the prefix
           // we need to try different prefix combinations
@@ -484,14 +503,14 @@ async function processQuery({
 
           for (let i = parts.length - 1; i > 0; i--) {
             const possiblePrefix = parts.slice(0, i).join('_')
-            console.log(`Trying possible prefix: "${possiblePrefix}"`)
+            // console.log(`Trying possible prefix: "${possiblePrefix}"`)
 
             if (serverNameMap[possiblePrefix]) {
               originalServerName = serverNameMap[possiblePrefix]
               originalToolName = parts.slice(i).join('_')
-              console.log(
+              /* console.log(
                 `Found match! Server: "${originalServerName}", Tool: "${originalToolName}"`
-              )
+              ) */
               break
             }
           }
@@ -817,14 +836,14 @@ async function processFollowUpToolCalls(
 
     for (let i = parts.length - 1; i > 0; i--) {
       const possiblePrefix = parts.slice(0, i).join('_')
-      console.log(`Trying possible prefix: "${possiblePrefix}"`)
+      // console.log(`Trying possible prefix: "${possiblePrefix}"`)
 
       if (serverNameMap[possiblePrefix]) {
         originalServerName = serverNameMap[possiblePrefix]
         originalToolName = parts.slice(i).join('_')
-        console.log(
+        /* console.log(
           `Found match! Server: "${originalServerName}", Tool: "${originalToolName}"`
-        )
+        ) */
         break
       }
     }
@@ -1045,6 +1064,110 @@ async function getServerActions() {
 
   return servers
 }
+
+// Function to preload and check all configured servers
+async function preloadServers() {
+  console.log('Preloading MCP servers...')
+
+  // Define schema for validating tool list responses
+  const ListToolsResultSchema = z.object({
+    tools: z.array(z.any()),
+  })
+
+  // Track server status
+  const serverStatus = {
+    total: Object.keys(config.mcpServers).length,
+    successful: 0,
+    failed: 0,
+    errors: {},
+  }
+
+  // Process each server in parallel with a timeout
+  const serverPromises = Object.entries(config.mcpServers).map(
+    async ([serverName, serverConfig]) => {
+      try {
+        // Set a timeout for each server
+        const timeoutPromise = new Promise((_, reject) => {
+          setTimeout(() => reject(new Error('Server discovery timeout')), 20000)
+        })
+
+        const discoveryPromise = (async () => {
+          try {
+            const client = await createMCPClient(serverName, 0, 1) // Only 1 retry for initial discovery
+            const toolsResponse = await client.request(
+              { method: 'tools/list' },
+              ListToolsResultSchema
+            )
+
+            // Cache the tools for this server
+            const sanitizedServerName = serverName.replace(
+              /[^a-zA-Z0-9_-]/g,
+              '_'
+            )
+            const prefixedTools = toolsResponse.tools.map((tool) => ({
+              ...tool,
+              name: `${sanitizedServerName}_${tool.name}`,
+              originalName: tool.name,
+              serverName: serverName,
+            }))
+
+            // Store tools and client in a global cache
+            if (!global.serverCache) {
+              global.serverCache = new Map()
+            }
+            global.serverCache.set(serverName, {
+              tools: prefixedTools,
+              client: client,
+            })
+
+            serverStatus.successful++
+            console.log(`Successfully preloaded server: ${serverName}`)
+            return { serverName, success: true }
+          } catch (error) {
+            serverStatus.failed++
+            serverStatus.errors[serverName] = error.message
+            console.error(
+              `Failed to preload server ${serverName}:`,
+              error.message
+            )
+            return { serverName, success: false, error: error.message }
+          }
+        })()
+
+        // Race the discovery against timeout
+        return await Promise.race([discoveryPromise, timeoutPromise])
+      } catch (error) {
+        serverStatus.failed++
+        serverStatus.errors[serverName] = error.message
+        console.error(`Failed to preload server ${serverName}:`, error.message)
+        return { serverName, success: false, error: error.message }
+      }
+    }
+  )
+
+  // Wait for all servers to be processed
+  const results = await Promise.allSettled(serverPromises)
+
+  // Log summary
+  console.log('\nServer preload summary:')
+  console.log(`Total servers: ${serverStatus.total}`)
+  console.log(`Successfully loaded: ${serverStatus.successful}`)
+  console.log(`Failed to load: ${serverStatus.failed}`)
+
+  if (serverStatus.failed > 0) {
+    console.log('\nFailed servers:')
+    Object.entries(serverStatus.errors).forEach(([server, error]) => {
+      console.log(`- ${server}: ${error}`)
+    })
+  }
+
+  return serverStatus
+}
+
+// Start preloading servers when this module is loaded
+preloadServers().catch((error) => {
+  console.error('Error during server preload:', error)
+})
 
 export {
   processQuery,
