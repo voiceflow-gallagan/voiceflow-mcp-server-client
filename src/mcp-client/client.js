@@ -1134,12 +1134,67 @@ async function preloadServers() {
             return { serverName, success: true }
           } catch (error) {
             serverStatus.failed++
-            serverStatus.errors[serverName] = error.message
+
+            // Enhanced error logging for common issues
+            let errorMessage = error.message
+            let troubleshootingSteps = []
+
+            // Authentication errors
+            if (error.code === 401) {
+              errorMessage = `Authentication failed (401) for ${serverName}`
+              troubleshootingSteps.push(
+                'Check if the API key or credentials in servers-config.json are valid and not expired',
+                'Verify the server configuration in servers-config.json'
+              )
+            }
+
+            // Network errors
+            if (
+              error.message.includes('network') ||
+              error.message.includes('connect')
+            ) {
+              errorMessage = `Network connection failed for ${serverName}`
+              troubleshootingSteps.push(
+                'Check your network connection',
+                'Verify the server URL is correct and accessible'
+              )
+            }
+
+            // SSE specific errors
+            if (error.message.includes('SSE')) {
+              troubleshootingSteps.push(
+                'Ensure the server supports SSE connections',
+                'Check if the server is running and accessible'
+              )
+            }
+
+            // Add server-specific troubleshooting if available
+            if (serverConfig) {
+              if (serverConfig.url) {
+                troubleshootingSteps.push(
+                  `Verify the server URL: ${serverConfig.url}`
+                )
+              }
+              if (serverConfig.command) {
+                troubleshootingSteps.push(
+                  `Check if the command '${serverConfig.command}' is available and working`
+                )
+              }
+            }
+
+            // Format the complete error message
+            const completeErrorMessage = [
+              errorMessage,
+              'Troubleshooting steps:',
+              ...troubleshootingSteps.map((step) => `- ${step}`),
+            ].join('\n')
+
+            serverStatus.errors[serverName] = completeErrorMessage
             console.error(
               `Failed to preload server ${serverName}:`,
-              error.message
+              completeErrorMessage
             )
-            return { serverName, success: false, error: error.message }
+            return { serverName, success: false, error: completeErrorMessage }
           }
         })()
 
@@ -1147,9 +1202,47 @@ async function preloadServers() {
         return await Promise.race([discoveryPromise, timeoutPromise])
       } catch (error) {
         serverStatus.failed++
-        serverStatus.errors[serverName] = error.message
-        console.error(`Failed to preload server ${serverName}:`, error.message)
-        return { serverName, success: false, error: error.message }
+
+        // Enhanced error logging for timeouts
+        let errorMessage = error.message
+        let troubleshootingSteps = []
+
+        if (error.message.includes('timeout')) {
+          errorMessage = `Server discovery timeout for ${serverName}`
+          troubleshootingSteps.push(
+            'The server took too long to respond',
+            'Check if the server is running and accessible',
+            'Consider increasing SERVER_DISCOVERY_TIMEOUT in .env if needed'
+          )
+        }
+
+        // Add server-specific timeout troubleshooting
+        if (serverConfig) {
+          if (serverConfig.url) {
+            troubleshootingSteps.push(
+              `Verify the server URL is accessible: ${serverConfig.url}`
+            )
+          }
+          if (serverConfig.command) {
+            troubleshootingSteps.push(
+              `Check if the command '${serverConfig.command}' is executing properly`
+            )
+          }
+        }
+
+        // Format the complete error message
+        const completeErrorMessage = [
+          errorMessage,
+          'Troubleshooting steps:',
+          ...troubleshootingSteps.map((step) => `- ${step}`),
+        ].join('\n')
+
+        serverStatus.errors[serverName] = completeErrorMessage
+        console.error(
+          `Failed to preload server ${serverName}:`,
+          completeErrorMessage
+        )
+        return { serverName, success: false, error: completeErrorMessage }
       }
     }
   )
@@ -1157,7 +1250,7 @@ async function preloadServers() {
   // Wait for all servers to be processed
   const results = await Promise.allSettled(serverPromises)
 
-  // Log summary
+  // Log summary with more context
   console.log('\nServer preload summary:')
   console.log(`Total servers: ${serverStatus.total}`)
   console.log(`Successfully loaded: ${serverStatus.successful}`)
@@ -1166,7 +1259,8 @@ async function preloadServers() {
   if (serverStatus.failed > 0) {
     console.log('\nFailed servers:')
     Object.entries(serverStatus.errors).forEach(([server, error]) => {
-      console.log(`- ${server}: ${error}`)
+      console.log(`- ${server}:`)
+      console.log(`  ${error}`)
     })
   }
 
