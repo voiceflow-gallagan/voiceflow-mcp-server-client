@@ -40,6 +40,7 @@ npm install
    LAST_RESPONSE_ONLY=false
    SERVER_DISCOVERY_TIMEOUT=30000
    ZAPIER_MCP_URL=https://actions.zapier.com/mcp/your-api-key/sse
+   MAX_CONVERSATION_HISTORY=10
    ```
 
    Required environment variables:
@@ -50,6 +51,7 @@ npm install
    - `LAST_RESPONSE_ONLY`: When set to "true", only the last tool response will be returned in the API response (default: false)
    - `SERVER_DISCOVERY_TIMEOUT`: Maximum time in milliseconds to wait for server discovery (default: 60000ms)
    - `ZAPIER_MCP_URL`: Optional URL for the Zapier MCP server (e.g., https://actions.zapier.com/mcp/your-api-key/sse)
+   - `MAX_CONVERSATION_HISTORY`: Maximum number of messages to keep in conversation history (default: 10)
 
 ### Dynamic Server Configuration
 

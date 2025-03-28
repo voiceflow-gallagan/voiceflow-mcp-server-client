@@ -252,6 +252,43 @@ function setupExitHandlers() {
 // Set up exit handlers when this module is loaded
 setupExitHandlers()
 
+// Function to limit conversation history to prevent token limit issues
+function limitConversationHistory(messages) {
+  const maxMessages = config.maxConversationHistory
+  if (messages.length <= maxMessages) return messages
+
+  // Always keep the system message (first message)
+  const systemMessage = messages[0]
+
+  // Keep the most recent messages, but ensure we don't exceed maxMessages
+  const recentMessages = messages.slice(-maxMessages + 1)
+
+  // If we have tool results in the recent messages, try to keep their corresponding tool calls
+  const toolCallIds = new Set()
+  recentMessages.forEach((msg) => {
+    if (msg.role === 'user' && Array.isArray(msg.content)) {
+      msg.content.forEach((content) => {
+        if (content.type === 'tool_result') {
+          toolCallIds.add(content.tool_use_id)
+        }
+      })
+    }
+  })
+
+  // Find the corresponding tool calls and keep them
+  const toolCalls = messages.filter((msg) => {
+    if (msg.role === 'assistant' && Array.isArray(msg.content)) {
+      return msg.content.some(
+        (content) => content.type === 'tool_use' && toolCallIds.has(content.id)
+      )
+    }
+    return false
+  })
+
+  // Combine system message, tool calls, and recent messages
+  return [systemMessage, ...toolCalls, ...recentMessages]
+}
+
 // Process a query using Claude and available MCP tools
 async function processQuery({
   query,
@@ -304,6 +341,9 @@ async function processQuery({
       if (userEmail && !context.userEmail) {
         context.userEmail = userEmail
       }
+
+      // Limit conversation history before adding new messages
+      context.messages = limitConversationHistory(context.messages)
 
       // Helper function to sanitize server names for tool prefixes
       function sanitizeServerName(name) {
@@ -658,7 +698,7 @@ async function processQuery({
         const finalFollowUpResponse = await anthropic.messages.create({
           model: config.claudeModel,
           max_tokens: 2000,
-          messages: context.messages,
+          messages: limitConversationHistory(context.messages), // Limit history before making the call
           tools: context.formattedTools, // Keep tools available for potential follow-up calls
         })
 
@@ -952,7 +992,7 @@ async function processFollowUpToolCalls(
   const followUpResponse = await anthropic.messages.create({
     model: model,
     max_tokens: 2000,
-    messages: context.messages,
+    messages: limitConversationHistory(context.messages), // Limit history before making the call
     tools: tools, // Keep tools available for potential additional follow-up calls
   })
 

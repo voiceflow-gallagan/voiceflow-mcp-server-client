@@ -56,4 +56,9 @@ export default {
   claudeModel: process.env.CLAUDE_MODEL || 'claude-3-7-sonnet-20250219',
   // Whether to only return the last tool response
   lastResponseOnly: process.env.LAST_RESPONSE_ONLY === 'true',
+  // Maximum number of messages to keep in conversation history
+  maxConversationHistory: parseInt(
+    process.env.MAX_CONVERSATION_HISTORY || '10',
+    10
+  ),
 }

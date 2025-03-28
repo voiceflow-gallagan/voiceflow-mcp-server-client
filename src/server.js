@@ -1,6 +1,12 @@
 import express from 'express'
 import apiRoutes from './api/index.js'
 import config from './config.js'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+// Get the directory name of the current module
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Global error handler
 process.on('uncaughtException', (error) => {
@@ -49,6 +55,9 @@ async function startServer() {
     // Middleware
     app.use(express.json())
 
+    // Serve static files from the public directory
+    app.use(express.static(path.join(__dirname, '../public')))
+
     // Error handling middleware for JSON parsing errors
     app.use((err, req, res, next) => {
       if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
@@ -57,13 +66,19 @@ async function startServer() {
       next(err)
     })
 
-    // Healthcheck endpoint
-    app.get('/', (req, res) => {
+    // Health check endpoint
+    app.get('/health', (req, res) => {
       res.status(200).json({
         status: 'ok',
         message: 'MCP Client API is running',
         availableServers: Object.keys(config.mcpServers),
+        timestamp: new Date().toISOString(),
       })
+    })
+
+    // Root endpoint - serve the chat interface
+    app.get('/', (req, res) => {
+      res.sendFile(path.join(__dirname, '../public/index.html'))
     })
 
     // API routes
@@ -95,6 +110,7 @@ async function startServer() {
           Object.keys(config.mcpServers).join(', ') || 'None'
         }`
       )
+      console.log(`Chat interface available at http://localhost:${port}`)
     })
 
     // Setup graceful shutdown
