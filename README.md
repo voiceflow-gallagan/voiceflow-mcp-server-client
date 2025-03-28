@@ -38,6 +38,8 @@ npm install
    PORT=3000
    BRAVE_API_KEY=your-brave-api-key
    LAST_RESPONSE_ONLY=false
+   SERVER_DISCOVERY_TIMEOUT=30000
+   ZAPIER_MCP_URL=https://actions.zapier.com/mcp/your-api-key/sse
    ```
 
    Required environment variables:
@@ -46,6 +48,27 @@ npm install
    - `PORT`: The port number for the server (default: 3000)
    - `BRAVE_API_KEY`: Your Brave Search API key for search functionality
    - `LAST_RESPONSE_ONLY`: When set to "true", only the last tool response will be returned in the API response (default: false)
+   - `SERVER_DISCOVERY_TIMEOUT`: Maximum time in milliseconds to wait for server discovery (default: 60000ms)
+   - `ZAPIER_MCP_URL`: Optional URL for the Zapier MCP server (e.g., https://actions.zapier.com/mcp/your-api-key/sse)
+
+### Dynamic Server Configuration
+
+The client supports dynamic server configuration through environment variables. Currently, this feature is only available for the Zapier MCP server. This allows you to:
+- Enable/disable the Zapier server without modifying the code
+- Configure the Zapier server with your API key securely
+- Add the Zapier server without code changes
+
+Example of dynamic server configuration:
+1. Add the Zapier server URL to your `.env` file:
+   ```
+   ZAPIER_MCP_URL=https://actions.zapier.com/mcp/your-api-key/sse
+   ```
+
+2. The Zapier server will be automatically configured when the application starts.
+
+3. To disable the Zapier server, simply remove or comment out the `ZAPIER_MCP_URL` environment variable.
+
+Note: While the dynamic server configuration feature is currently limited to the Zapier server, the architecture supports adding more dynamic servers in the future.
 
 ### Google Calendar Setup
 
@@ -75,12 +98,47 @@ To use the Google Calendar MCP server, you need to set up OAuth 2.0 credentials 
 ```json
 {
   "mcpServers": {
-    "weather": {
-      "url": "https://your-weather-mcp-server.com"
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--headless"]
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
+    },
+    "time-mcp": {
+      "command": "npx",
+      "args": ["-y", "time-mcp"]
+    },
+    "weather-server": {
+      "command": "node",
+      "args": ["mcp-servers/weather-mcp-server/build/index.js"],
+      "env": {
+        "OPENWEATHER_API_KEY": "${OPENWEATHER_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "google-calendar": {
+      "command": "node",
+      "args": ["./mcp-servers/google-calendar-mcp/build/index.js"]
     }
   }
 }
 ```
+
+Server configuration supports:
+- Command-based servers (using `command` and `args`)
+- Environment variable substitution (using `${VARIABLE_NAME}`)
+- Disabling servers (using `disabled: true`)
+- Auto-approval for specific tools (using `autoApprove`)
+
+For each server, tools will be prefixed with the server name to avoid conflicts (e.g., `weather_getWeather`).
+
+Currently, dynamic server configuration through environment variables is only supported for the Zapier server. This allows you to configure the Zapier server's URL and API key through the `ZAPIER_MCP_URL` environment variable. The architecture supports adding more dynamic servers in the future.
 
 ## Usage
 
@@ -103,17 +161,47 @@ This project supports integrating with remote MCP servers. You can configure the
 ```json
 {
   "mcpServers": {
-    "weather": {
-      "url": "https://your-weather-mcp-server.com"
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--headless"]
     },
-    "notion": {
-      "url": "https://your-notion-mcp-server.com"
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      }
+    },
+    "time-mcp": {
+      "command": "npx",
+      "args": ["-y", "time-mcp"]
+    },
+    "weather-server": {
+      "command": "node",
+      "args": ["mcp-servers/weather-mcp-server/build/index.js"],
+      "env": {
+        "OPENWEATHER_API_KEY": "${OPENWEATHER_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "google-calendar": {
+      "command": "node",
+      "args": ["./mcp-servers/google-calendar-mcp/build/index.js"]
     }
   }
 }
 ```
 
+Server configuration supports:
+- Command-based servers (using `command` and `args`)
+- Environment variable substitution (using `${VARIABLE_NAME}`)
+- Disabling servers (using `disabled: true`)
+- Auto-approval for specific tools (using `autoApprove`)
+
 For each server, tools will be prefixed with the server name to avoid conflicts (e.g., `weather_getWeather`).
+
+Currently, dynamic server configuration through environment variables is only supported for the Zapier server. This allows you to configure the Zapier server's URL and API key through the `ZAPIER_MCP_URL` environment variable. The architecture supports adding more dynamic servers in the future.
 
 ## API Endpoints
 
@@ -128,10 +216,37 @@ Response:
 {
   "status": "ok",
   "mcpServers": {
-    "server-name": {
-      "url": "http://localhost:3000",
-      "command": "node server.js",
-      "args": ["--port", "3000"]
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--headless"],
+      "disabled": false
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "disabled": false
+    },
+    "time-mcp": {
+      "command": "npx",
+      "args": ["-y", "time-mcp"],
+      "disabled": false
+    },
+    "weather-server": {
+      "command": "node",
+      "args": ["mcp-servers/weather-mcp-server/build/index.js"],
+      "env": {
+        "OPENWEATHER_API_KEY": "${OPENWEATHER_API_KEY}"
+      },
+      "disabled": false,
+      "autoApprove": []
+    },
+    "google-calendar": {
+      "command": "node",
+      "args": ["./mcp-servers/google-calendar-mcp/build/index.js"],
+      "disabled": false
     }
   }
 }

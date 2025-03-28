@@ -33,9 +33,6 @@
     "google-calendar": {
       "command": "node",
       "args": ["./mcp-servers/google-calendar-mcp/build/index.js"]
-    },
-    "zapier-actions-mcp": {
-      "url": "https://actions.zapier.com/mcp/sk-ak-Xz99Gjy01cUKxgZ6CmzapN5Q9E/sse"
     }
   }
 }

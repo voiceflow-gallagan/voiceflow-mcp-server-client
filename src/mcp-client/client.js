@@ -17,6 +17,24 @@ const cachedClients = new Map()
 // Store conversation contexts (key = conversationId)
 const conversationContexts = new Map()
 
+// Function to dynamically configure servers based on environment variables
+function configureDynamicServers() {
+  // Check for Zapier MCP URL in environment
+  const zapierUrl = process.env.ZAPIER_MCP_URL
+  if (zapierUrl) {
+    console.log(
+      'Zapier MCP URL found in environment, adding server configuration'
+    )
+    config.mcpServers['zapier-actions-mcp'] = {
+      url: zapierUrl,
+      disabled: false,
+    }
+  }
+}
+
+// Configure dynamic servers before any client operations
+configureDynamicServers()
+
 // Create a client for an MCP server
 async function createMCPClient(serverName, retryCount = 0, maxRetries = 3) {
   try {
