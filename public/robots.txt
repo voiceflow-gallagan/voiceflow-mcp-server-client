@@ -1,0 +1,22 @@
+# Disallow all web crawlers from accessing any part of the site
+User-agent: *
+Disallow: /
+Allow: /$
+
+# Additional specific rules for major search engines
+User-agent: Googlebot
+Disallow: /
+
+User-agent: Bingbot
+Disallow: /
+
+User-agent: Yandex
+Disallow: /
+
+User-agent: DuckDuckBot
+Disallow: /
+
+# Prevent caching
+Cache-Control: no-store, no-cache, must-revalidate, proxy-revalidate
+Pragma: no-cache
+Expires: 0
