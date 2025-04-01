@@ -1,9 +1,9 @@
 {
   "mcpServers": {
     "playwright": {
-      "command": "npx",
+      "command": "node",
       "args": [
-        "@playwright/mcp@latest",
+        "./node_modules/@playwright/mcp/cli.js",
         "--headless"
       ]
     },
