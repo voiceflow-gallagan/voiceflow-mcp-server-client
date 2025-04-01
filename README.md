@@ -159,6 +159,85 @@ For each server, tools will be prefixed with the server name to avoid conflicts 
 
 Currently, dynamic server configuration through environment variables is only supported for the Zapier server. This allows you to configure the Zapier server's URL and API key through the `ZAPIER_MCP_URL` environment variable. The architecture supports adding more dynamic servers in the future.
 
+## Docker Setup
+
+### Prerequisites
+
+- Docker installed on your system
+- Docker Compose (optional, for easier management)
+
+### Building and Running with Docker
+
+1. Build the Docker image:
+```bash
+docker build -t mcp-client .
+```
+
+2. Run the container:
+```bash
+docker run -p 3000:3000 \
+  --env-file .env \
+  --name mcp-client \
+  mcp-client
+```
+
+Or using Docker Compose (create a `docker-compose.yml` file):
+```yaml
+services:
+  mcp-client:
+    build: .
+    ports:
+      - "3135:3135"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+    restart: unless-stopped
+```
+
+Then run:
+```bash
+docker-compose up -d
+```
+
+### Docker Environment Variables
+
+The Docker container uses the same environment variables as the local setup. Make sure your `.env` file is properly configured before building the image.
+
+### Docker Volumes
+
+The following directories are available for volume mounting:
+- `/app/logs`: Application logs
+- `/app/public`: Static files
+
+### Docker Health Check
+
+The container includes a health check endpoint at `/health`. You can monitor the container's health using:
+```bash
+docker inspect --format='{{.State.Health.Status}}' mcp-client
+```
+
+### Docker Commands
+
+Common Docker commands for managing the container:
+
+```bash
+# Stop the container
+docker stop mcp-client
+
+# Start the container
+docker start mcp-client
+
+# View logs
+docker logs mcp-client
+
+# Remove the container
+docker rm mcp-client
+
+# Rebuild and restart with new changes
+docker-compose up -d --build
+```
+
 ## Usage
 
 ### Running the client
@@ -491,8 +570,6 @@ node demo.js
 ## Development
 
 - Run in development mode: `npm run dev`
-- Lint the code: `npm run lint`
-- Format the code: `npm run format`
 
 ## Error Handling
 
