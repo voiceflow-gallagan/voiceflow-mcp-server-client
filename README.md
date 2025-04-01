@@ -567,6 +567,12 @@ Or use the included demo:
 node demo.js
 ```
 
+### Testing with Demo Agent
+
+To test the integration, you can use the demo agent file `MCP Agent Apr 1 2025.vf`. This agent is configured to work with the MCP client and includes the MCP Tools function.
+
+Note: The demo agent is designed to showcase the integration capabilities and may need to be updated with your specific API keys and configurations.
+
 ## Development
 
 - Run in development mode: `npm run dev`

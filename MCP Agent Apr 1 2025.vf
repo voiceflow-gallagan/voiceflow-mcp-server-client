@@ -1,0 +1,3438 @@
+{
+  "version": {
+    "_version": 13,
+    "autoSaveFromRestore": false,
+    "canvasTemplates": [],
+    "components": [],
+    "creatorID": 3600,
+    "manualSave": false,
+    "model": {},
+    "name": "Initial Version",
+    "platformData": {
+      "slots": [],
+      "intents": [
+        {
+          "key": "None",
+          "name": "None",
+          "slots": [],
+          "inputs": [],
+          "noteID": null
+        },
+        {
+          "key": "6797c2110cfd6c00ccbedd9f",
+          "name": "No",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "I'm good",
+              "slots": []
+            },
+            {
+              "text": "Nope",
+              "slots": []
+            },
+            {
+              "text": "I think I'm good thanks",
+              "slots": []
+            },
+            {
+              "text": "Definitely not",
+              "slots": []
+            },
+            {
+              "text": "Nope",
+              "slots": []
+            },
+            {
+              "text": "Under no circumstances",
+              "slots": []
+            },
+            {
+              "text": "Not at all",
+              "slots": []
+            },
+            {
+              "text": "Nope, not at all",
+              "slots": []
+            },
+            {
+              "text": "No way",
+              "slots": []
+            },
+            {
+              "text": "By no means",
+              "slots": []
+            },
+            {
+              "text": "Not in the slightest",
+              "slots": []
+            },
+            {
+              "text": "No chance",
+              "slots": []
+            },
+            {
+              "text": "Absolutely not",
+              "slots": []
+            },
+            {
+              "text": "Not at all",
+              "slots": []
+            },
+            {
+              "text": "Negative",
+              "slots": []
+            },
+            {
+              "text": "Sorry, no",
+              "slots": []
+            },
+            {
+              "text": "Definitely not",
+              "slots": []
+            },
+            {
+              "text": "That's wrong",
+              "slots": []
+            },
+            {
+              "text": "Incorrect",
+              "slots": []
+            },
+            {
+              "text": "Nope",
+              "slots": []
+            },
+            {
+              "text": "No",
+              "slots": []
+            }
+          ],
+          "noteID": "xyava026r",
+          "description": "Trigger this intent then the user responds negatively"
+        },
+        {
+          "key": "6797c2660cfd6c00ccbeddd1",
+          "name": "Yes",
+          "slots": [],
+          "inputs": [
+            {
+              "text": "Definitely",
+              "slots": []
+            },
+            {
+              "text": "Indeed",
+              "slots": []
+            },
+            {
+              "text": "Of course",
+              "slots": []
+            },
+            {
+              "text": "Certainly",
+              "slots": []
+            },
+            {
+              "text": "Without question",
+              "slots": []
+            },
+            {
+              "text": "Sure",
+              "slots": []
+            },
+            {
+              "text": "Definitely",
+              "slots": []
+            },
+            {
+              "text": "You bet",
+              "slots": []
+            },
+            {
+              "text": "Without a doubt",
+              "slots": []
+            },
+            {
+              "text": "By all means",
+              "slots": []
+            },
+            {
+              "text": "Agreed",
+              "slots": []
+            },
+            {
+              "text": "Absolutely",
+              "slots": []
+            },
+            {
+              "text": "That's correct",
+              "slots": []
+            },
+            {
+              "text": "Indeed",
+              "slots": []
+            },
+            {
+              "text": "Affirmative",
+              "slots": []
+            },
+            {
+              "text": "You are right",
+              "slots": []
+            },
+            {
+              "text": "Correct",
+              "slots": []
+            },
+            {
+              "text": "Yep",
+              "slots": []
+            },
+            {
+              "text": "Yes",
+              "slots": []
+            }
+          ],
+          "noteID": "xyavb02g7",
+          "description": "Trigger this intent when the user responds positively."
+        }
+      ],
+      "settings": {
+        "restart": true,
+        "repeat": 100,
+        "locales": [
+          "en-US"
+        ],
+        "globalNoMatch": {
+          "type": "static",
+          "prompt": {
+            "id": "cm1729z6g01ya3b7xmgnv5yop",
+            "content": [
+              {
+                "children": [
+                  {
+                    "text": "Sorry, I didn’t get that. Please try again."
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "messageDelay": {
+          "durationMilliseconds": 500
+        },
+        "defaultVoice": "elevenlabs:eleven_turbo_v2_5:FGY2WhTYpPnrIDTdsKH5",
+        "deepgramASR": {
+          "silenceWaitMS": 300,
+          "punctuationWaitMS": 2000,
+          "partialWaitMS": 4000,
+          "interruptionWaitWords": 3,
+          "audioCue": null
+        }
+      },
+      "publishing": {
+        "avatar": "https://cdn.voiceflow.com/assets/logo.png",
+        "color": "#397DFF",
+        "description": "Hi, how can I help you today?",
+        "feedback": false,
+        "image": "https://cdn.voiceflow.com/assets/logo.png",
+        "persistence": "localStorage",
+        "position": "right",
+        "spacing": {
+          "side": 24,
+          "bottom": 24
+        },
+        "title": "Your AI agent",
+        "watermark": true,
+        "audioInterface": true
+      },
+      "platform": "webchat"
+    },
+    "programResources": {
+      "agents": {
+        "67dafd51cbe88befffef1b32": {
+          "settings": {
+            "model": "gpt-o3-mini",
+            "maxTokens": 8000,
+            "temperature": 0.3
+          },
+          "pathTools": [
+            {
+              "id": "67e67f39eb462a0ca375f7b3",
+              "name": "MCP Tools",
+              "variables": [
+                {
+                  "name": "user_id",
+                  "required": true,
+                  "description": "UserId passed in the context"
+                },
+                {
+                  "name": "conversationId",
+                  "required": true,
+                  "description": "Conversation ID passed in the context"
+                },
+                {
+                  "name": "query",
+                  "required": true,
+                  "description": "Last user question or query with context if needed"
+                },
+                {
+                  "name": "waiting_phrase",
+                  "required": true,
+                  "description": null
+                }
+              ],
+              "description": "When user ask for something that might be out of your scope or can't do, you want to check if you can use the available MCP tools to answer.\nIf you can only fulfill part of user request using your tools, inform the user and use the available tools for the remaining task.\nThis can take awhile so be sure to update the waiting_phrase first then call the tools."
+            }
+          ],
+          "description": "This is a simple conversational agent which can answer questions and have a conversation with a user entirely using an LLM's knowledge and MCP tools.",
+          "instructions": "You are a conversational AI assistant that answers user questions accurately and efficiently. You are friendly but to the point. You may ask brief follow-up questions only if necessary to clarify vague or incomplete queries.\nStart new conversation by welcoming the user.\n\nCurrent userId is: {user_id} \nCurrent conversationId is: user-{user_id} \n\n# MCP Tool Feature for real time. more accurante content and specific actions:\nYou have access to the following tools, you want to check if you can use any of the available MCP tools bellow to answer and prioritize them over a direct answer.\n\n<tools_schema>\n{MCP_Available_Tools} \n</tools_schema>\n\nBased on the tools schema, before using the tools ask the user for helpfull or required properties if needed to help with the query. \nIt can takes some time to retrieve the information from the tools, so be sure to update the waiting_phrase first.\n\nMCP tools can return one or multiple tools raw responses or error, you use this context to prepare your final answer.\nAlways analyze the responses from each tools to find the most accurate and pertinent info for each part of user request or task and share you final answer.\n\nTry to always send the full query so the MCP Function can make multiple tools request and return all the tools responses at once.\nIf you choose to make multiple calls to the tools, be sure to inform the user of the current task before making a new tool query.\n\n<tools_raw_response>\n{MCP_ToolsResponse}\n</tools_raw_response>\n\n<tools_error>\n{MCP_Error} \n</tools_error>\n\n# Behavior Guidelines:\n* Be concise, but conversational. No overly long explanations.\n* Ask clarifying questions only if needed. If the question is clear and don't need tools, answer immediately.\n* Do not overextend the conversation. Provide the answer, and let the user decide if they need more.\n* Avoid unnecessary filler. No “I’m looking that up…” - just answer directly.\n\n## Workflow:\n1. User asks a question.\n2. If clear → Answer directly while prioritizing the use of your tools.\n3. If you can't answer, try first the MCP tools function to generate an answer using one or multiple MCP Tools. \n4. End the interaction naturally.\n\n💬 Example Interactions:\n\n✅ Direct answer when clear:\nUser: \"Who won the last World Cup?\"\nAgent: \"Argentina won the 2022 FIFA World Cup, beating France in the final.\"\n\n✅ Clarifying when needed:\nUser: \"What's the best laptop?\"\nAgent: \"That depends! Are you looking for a gaming laptop, something for work, or just general use?\"\n\n✅ Keeping it conversational, but brief:\nUser: \"How do I get better at public speaking?\"\nAgent: \"Practice is key! Try speaking in front of a mirror, recording yourself, or joining a group like Toastmasters. Want a specific tip on handling nerves?\"",
+          "functionTools": [],
+          "webSearchTool": null,
+          "knowledgeBaseTool": null
+        }
+      },
+      "prompts": {
+        "675c8da1cd81b525d49e532c": {
+          "settings": {
+            "model": "claude-3.5-sonnet",
+            "maxTokens": 8000,
+            "temperature": 0.3
+          },
+          "system": "You are a helpful assistant. Your job is to answer questions using simple language. Keep your answers brief. Short and concise. Be friendly.",
+          "messages": [
+            {
+              "role": "user",
+              "content": "{vf_memory}"
+            },
+            {
+              "role": "user",
+              "content": "You have access to the following MCP servers:\n\n{\n    \"playwright\": {\n      \"name\": \"playwright\",\n      \"actions\": [\n        {\n          \"name\": \"browser_navigate\",\n          \"description\": \"Navigate to a URL\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"url\": {\n                \"type\": \"string\",\n                \"description\": \"The URL to navigate to\"\n              }\n            },\n            \"required\": [\n              \"url\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_go_back\",\n          \"description\": \"Go back to the previous page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_go_forward\",\n          \"description\": \"Go forward to the next page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_choose_file\",\n          \"description\": \"Choose one or multiple files to upload\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"paths\": {\n                \"type\": \"array\",\n                \"items\": {\n                  \"type\": \"string\"\n                },\n                \"description\": \"The absolute paths to the files to upload. Can be a single file or multiple files.\"\n              }\n            },\n            \"required\": [\n              \"paths\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_snapshot\",\n          \"description\": \"Capture accessibility snapshot of the current page, this is better than screenshot\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_click\",\n          \"description\": \"Perform click on a web page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_hover\",\n          \"description\": \"Hover over element on page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_type\",\n          \"description\": \"Type text into editable element\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              },\n              \"text\": {\n                \"type\": \"string\",\n                \"description\": \"Text to type into the element\"\n              },\n              \"submit\": {\n                \"type\": \"boolean\",\n                \"description\": \"Whether to submit entered text (press Enter after)\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\",\n              \"text\",\n              \"submit\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_select_option\",\n          \"description\": \"Select an option in a dropdown\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              },\n              \"values\": {\n                \"type\": \"array\",\n                \"items\": {\n                  \"type\": \"string\"\n                },\n                \"description\": \"Array of values to select in the dropdown. This can be a single value or multiple values.\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\",\n              \"values\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_take_screenshot\",\n          \"description\": \"Take a screenshot of the current page. You can't perform actions based on the screenshot, use browser_snapshot for actions.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"raw\": {\n                \"type\": \"boolean\",\n                \"description\": \"Whether to return without compression (in PNG format). Default is false, which returns a JPEG image.\"\n              }\n            },\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_press_key\",\n          \"description\": \"Press a key on the keyboard\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"key\": {\n                \"type\": \"string\",\n                \"description\": \"Name of the key to press or a character to generate, such as `ArrowLeft` or `a`\"\n              }\n            },\n            \"required\": [\n              \"key\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_wait\",\n          \"description\": \"Wait for a specified time in seconds\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"time\": {\n                \"type\": \"number\",\n                \"description\": \"The time to wait in seconds\"\n              }\n            },\n            \"required\": [\n              \"time\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_save_as_pdf\",\n          \"description\": \"Save page as PDF\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_close\",\n          \"description\": \"Close the page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"brave-search\": {\n      \"name\": \"brave-search\",\n      \"actions\": [\n        {\n          \"name\": \"brave_web_search\",\n          \"description\": \"Performs a web search using the Brave Search API, ideal for general queries, news, articles, and online content. Use this for broad information gathering, recent events, or when you need diverse web sources. Supports pagination, content filtering, and freshness controls. Maximum 20 results per request, with offset for pagination. \",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"query\": {\n                \"type\": \"string\",\n                \"description\": \"Search query (max 400 chars, 50 words)\"\n              },\n              \"count\": {\n                \"type\": \"number\",\n                \"description\": \"Number of results (1-20, default 10)\",\n                \"default\": 10\n              },\n              \"offset\": {\n                \"type\": \"number\",\n                \"description\": \"Pagination offset (max 9, default 0)\",\n                \"default\": 0\n              }\n            },\n            \"required\": [\n              \"query\"\n            ]\n          }\n        },\n        {\n          \"name\": \"brave_local_search\",\n          \"description\": \"Searches for local businesses and places using Brave's Local Search API. Best for queries related to physical locations, businesses, restaurants, services, etc. Returns detailed information including:\\n- Business names and addresses\\n- Ratings and review counts\\n- Phone numbers and opening hours\\nUse this when the query implies 'near me' or mentions specific locations. Automatically falls back to web search if no local results are found.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"query\": {\n                \"type\": \"string\",\n                \"description\": \"Local search query (e.g. 'pizza near Central Park')\"\n              },\n              \"count\": {\n                \"type\": \"number\",\n                \"description\": \"Number of results (1-20, default 5)\",\n                \"default\": 5\n              }\n            },\n            \"required\": [\n              \"query\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"time-mcp\": {\n      \"name\": \"time-mcp\",\n      \"actions\": [\n        {\n          \"name\": \"current_time\",\n          \"description\": \"Get the current date and time.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"format\": {\n                \"type\": \"string\",\n                \"description\": \"The format of the time, default is empty string\",\n                \"enum\": [\n                  \"h:mm A\",\n                  \"h:mm:ss A\",\n                  \"YYYY-MM-DD HH:mm:ss\",\n                  \"YYYY-MM-DD\",\n                  \"YYYY-MM\",\n                  \"MM/DD/YYYY\",\n                  \"MM/DD/YY\",\n                  \"YYYY/MM/DD\",\n                  \"YYYY/MM\"\n                ],\n                \"default\": \"YYYY-MM-DD HH:mm:ss\"\n              },\n              \"timezone\": {\n                \"type\": \"string\",\n                \"description\": \"The timezone of the time, IANA timezone name, e.g. Asia/Shanghai\"\n              }\n            },\n            \"required\": [\n              \"format\"\n            ]\n          }\n        },\n        {\n          \"name\": \"relative_time\",\n          \"description\": \"Get the relative time from now.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"time\": {\n                \"type\": \"string\",\n                \"description\": \"The time to get the relative time from now. Format: YYYY-MM-DD HH:mm:ss\"\n              }\n            }\n          }\n        },\n        {\n          \"name\": \"days_in_month\",\n          \"description\": \"Get the number of days in a month.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"date\": {\n                \"type\": \"string\",\n                \"description\": \"The date to get the days in month. Format: YYYY-MM-DD\"\n              }\n            }\n          }\n        },\n        {\n          \"name\": \"get_timestamp\",\n          \"description\": \"Get the timestamp of a time.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"time\": {\n                \"type\": \"string\",\n                \"description\": \"The time to get the timestamp. Format: YYYY-MM-DD HH:mm:ss\"\n              }\n            }\n          }\n        },\n        {\n          \"name\": \"convert_time\",\n          \"description\": \"Convert time between timezones.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"sourceTimezone\": {\n                \"type\": \"string\",\n                \"description\": \"The source timezone. IANA timezone name, e.g. Asia/Shanghai\"\n              },\n              \"targetTimezone\": {\n                \"type\": \"string\",\n                \"description\": \"The target timezone. IANA timezone name, e.g. Europe/London\"\n              },\n              \"time\": {\n                \"type\": \"string\",\n                \"description\": \"Date and time in 24-hour format. e.g. 2025-03-23 12:30:00\"\n              }\n            },\n            \"required\": [\n              \"sourceTimezone\",\n              \"targetTimezone\",\n              \"time\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"weather-server\": {\n      \"name\": \"weather-server\",\n      \"actions\": [\n        {\n          \"name\": \"get_current_weather\",\n          \"description\": \"Get current weather for a specified city\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"city\": {\n                \"type\": \"string\",\n                \"description\": \"City name (e.g., \\\"London\\\", \\\"New York\\\", \\\"Tokyo\\\")\"\n              }\n            },\n            \"required\": [\n              \"city\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"google-calendar\": {\n      \"name\": \"google-calendar\",\n      \"actions\": [\n        {\n          \"name\": \"list-calendars\",\n          \"description\": \"List all available calendars\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"required\": []\n          }\n        },\n        {\n          \"name\": \"list-events\",\n          \"description\": \"List events from a calendar\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar to list events from\"\n              },\n              \"timeMin\": {\n                \"type\": \"string\",\n                \"description\": \"Start time in ISO format (optional)\"\n              },\n              \"timeMax\": {\n                \"type\": \"string\",\n                \"description\": \"End time in ISO format (optional)\"\n              }\n            },\n            \"required\": [\n              \"calendarId\"\n            ]\n          }\n        },\n        {\n          \"name\": \"list-colors\",\n          \"description\": \"List available color IDs for calendar events\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"required\": []\n          }\n        },\n        {\n          \"name\": \"create-event\",\n          \"description\": \"Create a new calendar event\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar to create event in\"\n              },\n              \"summary\": {\n                \"type\": \"string\",\n                \"description\": \"Title of the event\"\n              },\n              \"description\": {\n                \"type\": \"string\",\n                \"description\": \"Description of the event\"\n              },\n              \"start\": {\n                \"type\": \"string\",\n                \"description\": \"Start time in ISO format\"\n              },\n              \"end\": {\n                \"type\": \"string\",\n                \"description\": \"End time in ISO format\"\n              },\n              \"location\": {\n                \"type\": \"string\",\n                \"description\": \"Location of the event\"\n              },\n              \"attendees\": {\n                \"type\": \"array\",\n                \"description\": \"List of attendees\",\n                \"items\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"email\": {\n                      \"type\": \"string\",\n                      \"description\": \"Email address of the attendee\"\n                    }\n                  },\n                  \"required\": [\n                    \"email\"\n                  ]\n                }\n              },\n              \"colorId\": {\n                \"type\": \"string\",\n                \"description\": \"Color ID for the event\"\n              },\n              \"reminders\": {\n                \"type\": \"object\",\n                \"description\": \"Reminder settings for the event\",\n                \"properties\": {\n                  \"useDefault\": {\n                    \"type\": \"boolean\",\n                    \"description\": \"Whether to use the default reminders\"\n                  },\n                  \"overrides\": {\n                    \"type\": \"array\",\n                    \"description\": \"Custom reminders (uses popup notifications by default unless email is specified)\",\n                    \"items\": {\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"method\": {\n                          \"type\": \"string\",\n                          \"enum\": [\n                            \"email\",\n                            \"popup\"\n                          ],\n                          \"description\": \"Reminder method (defaults to popup unless email is specified)\",\n                          \"default\": \"popup\"\n                        },\n                        \"minutes\": {\n                          \"type\": \"number\",\n                          \"description\": \"Minutes before the event to trigger the reminder\"\n                        }\n                      },\n                      \"required\": [\n                        \"minutes\"\n                      ]\n                    }\n                  }\n                },\n                \"required\": [\n                  \"useDefault\"\n                ]\n              }\n            },\n            \"required\": [\n              \"calendarId\",\n              \"summary\",\n              \"start\",\n              \"end\"\n            ]\n          }\n        },\n        {\n          \"name\": \"update-event\",\n          \"description\": \"Update an existing calendar event\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar containing the event\"\n              },\n              \"eventId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the event to update\"\n              },\n              \"summary\": {\n                \"type\": \"string\",\n                \"description\": \"New title of the event\"\n              },\n              \"description\": {\n                \"type\": \"string\",\n                \"description\": \"New description of the event\"\n              },\n              \"start\": {\n                \"type\": \"string\",\n                \"description\": \"New start time in ISO format\"\n              },\n              \"end\": {\n                \"type\": \"string\",\n                \"description\": \"New end time in ISO format\"\n              },\n              \"location\": {\n                \"type\": \"string\",\n                \"description\": \"New location of the event\"\n              },\n              \"colorId\": {\n                \"type\": \"string\",\n                \"description\": \"New color ID for the event\"\n              },\n              \"attendees\": {\n                \"type\": \"array\",\n                \"description\": \"List of attendees\",\n                \"items\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"email\": {\n                      \"type\": \"string\",\n                      \"description\": \"Email address of the attendee\"\n                    }\n                  },\n                  \"required\": [\n                    \"email\"\n                  ]\n                }\n              },\n              \"reminders\": {\n                \"type\": \"object\",\n                \"description\": \"New reminder settings for the event\",\n                \"properties\": {\n                  \"useDefault\": {\n                    \"type\": \"boolean\",\n                    \"description\": \"Whether to use the default reminders\"\n                  },\n                  \"overrides\": {\n                    \"type\": \"array\",\n                    \"description\": \"Custom reminders (uses popup notifications by default unless email is specified)\",\n                    \"items\": {\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"method\": {\n                          \"type\": \"string\",\n                          \"enum\": [\n                            \"email\",\n                            \"popup\"\n                          ],\n                          \"description\": \"Reminder method (defaults to popup unless email is specified)\",\n                          \"default\": \"popup\"\n                        },\n                        \"minutes\": {\n                          \"type\": \"number\",\n                          \"description\": \"Minutes before the event to trigger the reminder\"\n                        }\n                      },\n                      \"required\": [\n                        \"minutes\"\n                      ]\n                    }\n                  }\n                },\n                \"required\": [\n                  \"useDefault\"\n                ]\n              }\n            },\n            \"required\": [\n              \"calendarId\",\n              \"eventId\"\n            ]\n          }\n        },\n        {\n          \"name\": \"delete-event\",\n          \"description\": \"Delete a calendar event\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar containing the event\"\n              },\n              \"eventId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the event to delete\"\n              }\n            },\n            \"required\": [\n              \"calendarId\",\n              \"eventId\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"zapier-actions-mcp\": {\n      \"name\": \"zapier-actions-mcp\",\n      \"actions\": [\n        {\n          \"name\": \"send_slack_direct_message\",\n          \"description\": \"Sends a direct message to a user or yourself from the Slackbot. Can also schedule a message for later. (Fixed parameters: To Username: NiKo)\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"preview_only\": {\n                \"type\": \"boolean\",\n                \"description\": \"When set to true, the action will only be previewed without actually executing it\"\n              },\n              \"text\": {\n                \"type\": \"string\",\n                \"description\": \"Message Text\"\n              }\n            },\n            \"required\": [\n              \"text\"\n            ]\n          }\n        },\n        {\n          \"name\": \"edit_actions\",\n          \"description\": \"Edit your existing MCP provider actions\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"random_string\": {\n                \"type\": \"string\",\n                \"description\": \"Dummy parameter for no-parameter tools\"\n              }\n            },\n            \"required\": []\n          }\n        },\n        {\n          \"name\": \"add_actions\",\n          \"description\": \"Add new actions to your MCP provider\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"random_string\": {\n                \"type\": \"string\",\n                \"description\": \"Dummy parameter for no-parameter tools\"\n              }\n            },\n            \"required\": []\n          }\n        }\n      ],\n      \"enabled\": true\n    }\n  }\n\nUser them to generate your answer whenever needed in user's query.\n\nUser: {last_utterance}"
+            }
+          ]
+        }
+      },
+      "messages": {
+        "67e3e575e5a8e42a46e273b7": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": ""
+                        },
+                        {
+                          "text": "{waiting_phrase}"
+                        },
+                        {
+                          "text": " "
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "67e3f8500030d144c906aec9": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "Error reaching MCP Client"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "67e427db0030d144c906de0c": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": "Nice to meet you"
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        },
+        "67e427fc0030d144c906de3c": {
+          "variants": {
+            "default:en-us": [
+              {
+                "data": {
+                  "text": [
+                    {
+                      "children": [
+                        {
+                          "text": ""
+                        },
+                        {
+                          "text": "{debug}"
+                        },
+                        {
+                          "text": " "
+                        }
+                      ]
+                    }
+                  ],
+                  "delay": null
+                },
+                "condition": null
+              }
+            ]
+          }
+        }
+      }
+    },
+    "prototype": {
+      "type": "chat",
+      "data": {
+        "name": "MCP Agent",
+        "locales": [
+          "en-US"
+        ]
+      },
+      "model": {
+        "intents": [],
+        "slots": []
+      },
+      "context": {
+        "stack": [
+          {
+            "diagramID": "64dbb6696a8fab0013dba194",
+            "storage": {},
+            "variables": {}
+          }
+        ],
+        "variables": {}
+      },
+      "surveyorContext": {
+        "nonDraftResponsesMap": {},
+        "responseMessagesByDiscriminatorIDMap": {},
+        "responseDiscriminatorsByResponseIDMap": {},
+        "functionDefinitions": {
+          "67e16d9fb38caa87c5ed347a": {
+            "name": "MCP Tools",
+            "codeId": "67e3dbba14d196785e9ca1b7-67e16d9fb38caa87c5ed347a-kjmiifmg.js",
+            "pathCodes": [
+              "error",
+              "default"
+            ],
+            "inputVars": {
+              "conversationId": {
+                "type": "text",
+                "description": "Current user conversation ID"
+              },
+              "query": {
+                "type": "text",
+                "description": "Current user query"
+              },
+              "userId": {
+                "type": "text",
+                "description": "Current user ID"
+              }
+            },
+            "outputVars": {
+              "error": {
+                "type": "text",
+                "description": ""
+              },
+              "answer": {
+                "type": "text",
+                "description": ""
+              },
+              "toolsResponse": {
+                "type": "text",
+                "description": "Responses from the tools to generate your final answer"
+              }
+            },
+            "description": "This function will use MCP tools to help users with their requests and return an answer.\nThis can take awhile so respond first then call the tools.\nThe MCP Tools can use multiple tools to help with user query so be sure to analyze all the tools responses before generating your answer."
+          }
+        },
+        "referencedResponseIDs": [
+          "67e3e575e5a8e42a46e273b7",
+          "67e3f8500030d144c906aec9",
+          "67e427db0030d144c906de0c",
+          "67e427fc0030d144c906de3c"
+        ],
+        "referencedAgentsIDs": [
+          "67dafd51cbe88befffef1b32"
+        ],
+        "slotsMap": {},
+        "platform": "webchat",
+        "products": {},
+        "extraSlots": [],
+        "interfaces": [],
+        "permissions": [],
+        "projectType": "chat",
+        "extraIntents": [],
+        "usedEventsSet": [],
+        "usedIntentsSet": [],
+        "goToIntentsSet": [],
+        "entitiesMap": {},
+        "variableMap": {},
+        "intentsMap": {},
+        "requiredEntitiesMap": {},
+        "eventsMap": {},
+        "cmsVariables": {
+          "user_id": {
+            "isSystem": true,
+            "description": "The user's unique ID.",
+            "defaultValue": null
+          },
+          "sessions": {
+            "isSystem": true,
+            "description": "The number of times a particular user has opened the app.",
+            "defaultValue": null
+          },
+          "timestamp": {
+            "isSystem": true,
+            "description": "UNIX timestamp (number of seconds since January 1st, 1970 at UTC).",
+            "defaultValue": null
+          },
+          "platform": {
+            "isSystem": true,
+            "description": "The platform your agent is running on (e.g. \"voiceflow\").",
+            "defaultValue": null
+          },
+          "locale": {
+            "isSystem": true,
+            "description": "The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...).",
+            "defaultValue": null
+          },
+          "intent_confidence": {
+            "isSystem": true,
+            "description": "The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.",
+            "defaultValue": null
+          },
+          "last_response": {
+            "isSystem": true,
+            "description": "The agent's last response (text/speak) in a string.",
+            "defaultValue": null
+          },
+          "last_event": {
+            "isSystem": true,
+            "description": "The object containing the last event that the user client has triggered.",
+            "defaultValue": null
+          },
+          "last_utterance": {
+            "isSystem": true,
+            "description": "The user's last utterance in a text string.",
+            "defaultValue": null
+          },
+          "vf_memory": {
+            "isSystem": true,
+            "description": "Last 10 user inputs and agent responses in a string (e.g. \"agent: How can i help?\"\nuser: What's the weather today?).",
+            "defaultValue": null
+          },
+          "chunks": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "Information received from the knowledge base - also known as 'chunks'.",
+            "defaultValue": null
+          },
+          "question": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "The question that the user asked",
+            "defaultValue": null
+          },
+          "MCP_Response": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "",
+            "defaultValue": null
+          },
+          "query": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "",
+            "defaultValue": null
+          },
+          "conversationId": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "",
+            "defaultValue": "0"
+          },
+          "MCP_ToolsResponse": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "An array of one or multiple responses from the MCP Tools to help you generate your answer.",
+            "defaultValue": null
+          },
+          "MCP_Error": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "",
+            "defaultValue": null
+          },
+          "MCP_Available_Tools": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "",
+            "defaultValue": null
+          },
+          "waiting_phrase": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "An LLM generate short sentence to let user knows the operation you're doing with the tools.",
+            "defaultValue": null
+          },
+          "debug": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "",
+            "defaultValue": null
+          },
+          "MCP_Memory": {
+            "isArray": false,
+            "isSystem": false,
+            "datatype": "any",
+            "description": "Variable to store previous and current MCP Responses",
+            "defaultValue": null
+          }
+        },
+        "cmsEntities": {}
+      },
+      "settings": {},
+      "platform": "webchat"
+    },
+    "settings": {
+      "intentClassification": {
+        "type": "rag",
+        "params": {
+          "model": "claude-3.5-haiku",
+          "temperature": 0.1
+        },
+        "promptWrapper": null
+      },
+      "widget": {
+        "chat": {
+          "voiceInput": false,
+          "voiceOutput": false,
+          "renderMode": "widget",
+          "headerImage": {
+            "enabled": true
+          },
+          "agentImage": {
+            "enabled": true
+          },
+          "banner": {
+            "enabled": true,
+            "title": "Your AI agent",
+            "description": "How can I help you today?"
+          },
+          "placeholderText": "Message...",
+          "aiDisclaimer": {
+            "enabled": false,
+            "text": "Generated by AI, double-check for accuracy."
+          },
+          "disclaimer": {
+            "enabled": false,
+            "title": "Privacy notice",
+            "description": "Before we can proceed with your conversation, we kindly ask you to review and accept our privacy policy, outlining how we handle and protect your personal information throughout our services.",
+            "primaryButtonText": "Submit",
+            "secondaryButtonText": "Privacy policy",
+            "secondaryButtonURL": ""
+          },
+          "handoffToAgentImageURL": ""
+        },
+        "common": {
+          "fontFamily": "UCity Pro",
+          "launcher": {
+            "text": "Test your agent",
+            "type": "both"
+          },
+          "poweredBy": true,
+          "footerLink": {
+            "enabled": true
+          },
+          "position": "right",
+          "sideSpacing": "20",
+          "bottomSpacing": "20",
+          "primaryColor": {
+            "color": "#397DFF",
+            "palette": {
+              "50": "#E7F5FD",
+              "100": "#C6E4FB",
+              "200": "#A2D2FA",
+              "300": "#87BFFB",
+              "400": "#659FFD",
+              "500": "#397DFF",
+              "600": "#2F68DB",
+              "700": "#264EB4",
+              "800": "#1C368E",
+              "900": "#0F1E61"
+            }
+          },
+          "persistence": "localStorage"
+        },
+        "security": {
+          "approvedDomains": {
+            "enabled": false,
+            "domains": ""
+          },
+          "disableTranscript": false
+        },
+        "type": "chat",
+        "voice": {
+          "renderMode": "full",
+          "content": {
+            "callToActionText": "How can I help you?",
+            "startButtonText": "Start a call",
+            "listeningText": "Listening...",
+            "talkingText": "Talk to interrupt",
+            "endButtonText": "End"
+          }
+        }
+      }
+    },
+    "topics": [
+      {
+        "type": "DIAGRAM",
+        "sourceID": "64dbb6696a8fab0013dba194"
+      }
+    ],
+    "variables": [
+      "user_id",
+      "sessions",
+      "timestamp",
+      "platform",
+      "locale",
+      "intent_confidence",
+      "last_response",
+      "last_event",
+      "last_utterance",
+      "vf_memory",
+      "chunks",
+      "question",
+      "MCP_Response",
+      "query",
+      "conversationId",
+      "MCP_ToolsResponse",
+      "MCP_Error",
+      "MCP_Available_Tools",
+      "waiting_phrase",
+      "debug",
+      "MCP_Memory"
+    ],
+    "_id": "67e3dbba14d196785e9ca1b7",
+    "updatedAt": "2025-04-01T09:19:21.575Z",
+    "publishedAt": "2024-09-27T16:54:27.996Z",
+    "domains": [
+      {
+        "id": "cla06iyr900b206pkh8d4ap8n",
+        "name": "Home",
+        "live": true,
+        "topicIDs": [
+          "64dbb6696a8fab0013dba194"
+        ],
+        "rootDiagramID": "64dbb6696a8fab0013dba194",
+        "updatedBy": 3600,
+        "updatedAt": "2025-03-26T10:49:30.376Z"
+      }
+    ],
+    "projectID": "67e3dbba14d196785e9ca1b6",
+    "rootDiagramID": "64dbb6696a8fab0013dba194",
+    "templateDiagramID": "64dbb6696a8fab0013dba195"
+  },
+  "diagrams": {
+    "64dbb6696a8fab0013dba195": {
+      "name": "Template Diagram",
+      "type": "TEMPLATE",
+      "zoom": 100,
+      "nodes": {},
+      "offsetX": 0,
+      "offsetY": 0,
+      "modified": 1701833501,
+      "creatorID": 3600,
+      "variables": [],
+      "menuItems": [],
+      "_id": "67e3dbba14d196785e9ca1b9",
+      "diagramID": "64dbb6696a8fab0013dba195",
+      "versionID": "67e3dbba14d196785e9ca1b7"
+    },
+    "64dbb6696a8fab0013dba194": {
+      "name": "ROOT",
+      "type": "TOPIC",
+      "zoom": 100,
+      "nodes": {
+        "start00000000000000000000": {
+          "type": "start",
+          "data": {
+            "name": "Start",
+            "color": "#56b365",
+            "steps": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "67dafd50ef92805489f3dba3",
+                  "id": "6032afcf359e8c14c06c0319",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -728.96,
+                          -1689.17
+                        ]
+                      },
+                      {
+                        "point": [
+                          -660.74,
+                          -1689.1
+                        ]
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            },
+            "label": "Start"
+          },
+          "nodeID": "start00000000000000000000",
+          "coords": [
+            -793.5953401359956,
+            -1711.167709815855
+          ]
+        },
+        "67dafd50ef92805489f3dba2": {
+          "type": "agent",
+          "data": {
+            "name": "Basic Conversational Agent",
+            "agentID": "67dafd51cbe88befffef1b32",
+            "listenForOtherTriggers": false,
+            "exitEveryConversationalTurn": false,
+            "portsV2": {
+              "byKey": {
+                "67e67f39eb462a0ca375f7b3": {
+                  "id": "67e67f39b4d82c7b86e2b709",
+                  "target": "67e3e1544056e161cc0dca6a",
+                  "type": "",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          54.63,
+                          -1509.78
+                        ]
+                      },
+                      {
+                        "point": [
+                          85.07,
+                          -1509.78
+                        ]
+                      },
+                      {
+                        "point": [
+                          85.07,
+                          -1688.6
+                        ]
+                      },
+                      {
+                        "point": [
+                          115.51,
+                          -1688.6
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "67dafd50ef92805489f3dba2",
+          "coords": [
+            0,
+            0
+          ]
+        },
+        "67dafd50ef92805489f3dba3": {
+          "type": "block",
+          "data": {
+            "name": "Init | Fetch MCP Tools info",
+            "steps": [
+              "67e69fa40739df83670a121c",
+              "67e3e8f64056e161cc0dca7f",
+              "67e3ddc94056e161cc0dca4e"
+            ],
+            "color": "#5b9fd7"
+          },
+          "nodeID": "67dafd50ef92805489f3dba3",
+          "coords": [
+            -495.73542175909904,
+            -1716.0952091913532
+          ]
+        },
+        "67e3ddc94056e161cc0dca4e": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "_memory_ = []\nMCP_Available_Tools = JSON.stringify(MCP_Available_Tools)",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "67e3f4a44056e161cc0dca8d",
+                  "id": "67e3ddc94056e161cc0dca4f",
+                  "data": {}
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": "67e3f84ab9ef7c7813061519",
+                  "id": "67e3ddc94056e161cc0dca50",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -662.07,
+                          -1370.15
+                        ],
+                        "reversed": true
+                      },
+                      {
+                        "point": [
+                          -686.07,
+                          -1370.15
+                        ]
+                      },
+                      {
+                        "point": [
+                          -686.07,
+                          -1310.37
+                        ]
+                      },
+                      {
+                        "point": [
+                          -499.21,
+                          -1310.37
+                        ]
+                      },
+                      {
+                        "point": [
+                          -499.21,
+                          -1286.37
+                        ],
+                        "toTop": true,
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e3ddc94056e161cc0dca4e"
+        },
+        "67e3e1544056e161cc0dca68": {
+          "type": "function",
+          "data": {
+            "inputMapping": {
+              "userId": [
+                {
+                  "text": [
+                    "",
+                    {
+                      "variableID": "user_id"
+                    },
+                    ""
+                  ]
+                }
+              ],
+              "query": [
+                {
+                  "text": [
+                    "",
+                    {
+                      "variableID": "67e11e928ef7fa02101d51ee"
+                    },
+                    ""
+                  ]
+                }
+              ],
+              "conversationId": [
+                {
+                  "text": [
+                    "",
+                    {
+                      "variableID": "67e173d7b38caa87c5ed39eb"
+                    },
+                    ""
+                  ]
+                }
+              ]
+            },
+            "outputMapping": {
+              "toolsResponses": "67e16b7fb38caa87c5ed3227",
+              "answer": "67df4df58ef7fa02101c3cab",
+              "error": "67e3e41de5a8e42a46e2729c",
+              "toolsResponse": "67e16b7fb38caa87c5ed3227"
+            },
+            "portsV2": {
+              "byKey": {
+                "__vf__default": {
+                  "type": "",
+                  "target": null,
+                  "id": "67e3e1544056e161cc0dca69"
+                },
+                "67e16da9b38caa87c5ed3483": {
+                  "id": "67e3e15b4056e161cc0dca71",
+                  "target": "67e3f4a44056e161cc0dca8d",
+                  "type": "",
+                  "data": {}
+                },
+                "67e16da9b38caa87c5ed3484": {
+                  "id": "67e3e15b4056e161cc0dca72",
+                  "target": "67e3f4a44056e161cc0dca8d",
+                  "type": "",
+                  "data": {}
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "functionID": "67e16d9fb38caa87c5ed347a",
+            "name": "MCP Tools"
+          },
+          "nodeID": "67e3e1544056e161cc0dca68"
+        },
+        "67e3e1544056e161cc0dca6a": {
+          "type": "block",
+          "data": {
+            "name": "MCP Tools",
+            "steps": [
+              "67e3e5744056e161cc0dca7a",
+              "67e3e1544056e161cc0dca68"
+            ],
+            "color": "#5b9fd7"
+          },
+          "nodeID": "67e3e1544056e161cc0dca6a",
+          "coords": [
+            280.5143165588379,
+            -1715.6001806259155
+          ]
+        },
+        "67e3e5744056e161cc0dca7a": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "messageID": "67e3e575e5a8e42a46e273b7",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e3e5744056e161cc0dca7b"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e3e5744056e161cc0dca7a"
+        },
+        "67e3e8f64056e161cc0dca7f": {
+          "type": "api-v2",
+          "data": {
+            "name": "",
+            "url": [
+              {
+                "text": [
+                  "https://mcp-client.proxy-voiceflow.com/api/servers"
+                ]
+              }
+            ],
+            "headers": [
+              {
+                "id": "cm8puzepg03923b7sb7z98nkk",
+                "key": "Content-Type",
+                "value": [
+                  {
+                    "text": [
+                      "application/json"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "httpMethod": "get",
+            "queryParameters": [],
+            "responseMappings": [
+              {
+                "id": "cm8pv4s6q039n3b7s9gj1c5cr",
+                "path": "servers",
+                "variableID": "67e3e8dfe5a8e42a46e27738"
+              }
+            ],
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e3e8f64056e161cc0dca80"
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "67e3e8f64056e161cc0dca81"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e3e8f64056e161cc0dca7f"
+        },
+        "67e3f4a44056e161cc0dca8d": {
+          "type": "block",
+          "data": {
+            "name": "Agent",
+            "steps": [
+              "67dafd50ef92805489f3dba2"
+            ],
+            "color": "#d081bf"
+          },
+          "nodeID": "67e3f4a44056e161cc0dca8d",
+          "coords": [
+            -111.70797348022461,
+            -1716.0952091913532
+          ]
+        },
+        "67e3f84ab9ef7c7813061517": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e3f84ab9ef7c7813061518"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "67e3f8500030d144c906aec9"
+          },
+          "nodeID": "67e3f84ab9ef7c7813061517"
+        },
+        "67e3f84ab9ef7c7813061519": {
+          "type": "block",
+          "data": {
+            "name": "Error",
+            "steps": [
+              "67e3f84ab9ef7c7813061517"
+            ],
+            "color": "#CB627B"
+          },
+          "nodeID": "67e3f84ab9ef7c7813061519",
+          "coords": [
+            -499.2079734802246,
+            -1286.3729870427169
+          ]
+        },
+        "67e427d383eb9c4c221c4e8a": {
+          "type": "capture-v3",
+          "data": {
+            "name": "Capture",
+            "capture": {
+              "type": "user-reply",
+              "variableID": "last_utterance"
+            },
+            "listenForOtherTriggers": false,
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": "67e427d983eb9c4c221c4e94",
+                  "id": "67e427d383eb9c4c221c4e8b",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          -315.06,
+                          -3543.3
+                        ]
+                      },
+                      {
+                        "point": [
+                          -282.6,
+                          -3543.3
+                        ]
+                      },
+                      {
+                        "point": [
+                          -282.6,
+                          -3600.74
+                        ]
+                      },
+                      {
+                        "point": [
+                          -250.14,
+                          -3600.74
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e427d383eb9c4c221c4e8a"
+        },
+        "67e427d383eb9c4c221c4e8c": {
+          "type": "block",
+          "data": {
+            "name": "New Block 5",
+            "steps": [
+              "67e427d383eb9c4c221c4e8a"
+            ]
+          },
+          "nodeID": "67e427d383eb9c4c221c4e8c",
+          "coords": [
+            -481.39115711639494,
+            -3630.235960114899
+          ]
+        },
+        "67e427d983eb9c4c221c4e92": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e427d983eb9c4c221c4e93"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "67e427db0030d144c906de0c"
+          },
+          "nodeID": "67e427d983eb9c4c221c4e92"
+        },
+        "67e427d983eb9c4c221c4e94": {
+          "type": "block",
+          "data": {
+            "name": "New Block 6",
+            "steps": [
+              "67e427d983eb9c4c221c4e92",
+              "67e427e783eb9c4c221c4e9c"
+            ]
+          },
+          "nodeID": "67e427d983eb9c4c221c4e94",
+          "coords": [
+            -85.14115711639562,
+            -3627.735960114899
+          ]
+        },
+        "67e427e783eb9c4c221c4e9c": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "debug = JSON.stringify(_memory_)",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": "67e427fa83eb9c4c221c4ea5",
+                  "id": "67e427e783eb9c4c221c4e9d",
+                  "data": {
+                    "points": [
+                      {
+                        "point": [
+                          81.19,
+                          -3434.33
+                        ]
+                      },
+                      {
+                        "point": [
+                          136.78,
+                          -3434.33
+                        ]
+                      },
+                      {
+                        "point": [
+                          136.78,
+                          -3600.74
+                        ]
+                      },
+                      {
+                        "point": [
+                          192.36,
+                          -3600.74
+                        ],
+                        "allowedToTop": true
+                      }
+                    ]
+                  }
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "67e427e783eb9c4c221c4e9e"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e427e783eb9c4c221c4e9c"
+        },
+        "67e427fa83eb9c4c221c4ea3": {
+          "type": "message",
+          "data": {
+            "name": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e427fa83eb9c4c221c4ea4"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            },
+            "messageID": "67e427fc0030d144c906de3c"
+          },
+          "nodeID": "67e427fa83eb9c4c221c4ea3"
+        },
+        "67e427fa83eb9c4c221c4ea5": {
+          "type": "block",
+          "data": {
+            "name": "New Block 7",
+            "steps": [
+              "67e42d2683eb9c4c221c4ebe",
+              "67e427fa83eb9c4c221c4ea3"
+            ]
+          },
+          "nodeID": "67e427fa83eb9c4c221c4ea5",
+          "coords": [
+            357.35869029571427,
+            -3627.735960114899
+          ]
+        },
+        "67e42c6c83eb9c4c221c4ead": {
+          "type": "set-v3",
+          "data": {
+            "name": "",
+            "items": [
+              {
+                "id": "cm8q59l8000xm3b7nv1t1lfbm",
+                "type": "script",
+                "label": null,
+                "value": [
+                  "return `${last_utterance} ${last_response}`"
+                ],
+                "variableID": "67e428020030d144c906de45"
+              }
+            ],
+            "label": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e42c6c83eb9c4c221c4eae"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e42c6c83eb9c4c221c4ead",
+          "coords": [
+            0,
+            0
+          ]
+        },
+        "67e42d2683eb9c4c221c4ebe": {
+          "type": "set-v3",
+          "data": {
+            "name": "",
+            "items": [
+              {
+                "id": "cm8q5dj37017p3b7nan9lja48",
+                "type": "value",
+                "label": null,
+                "value": [
+                  {
+                    "text": [
+                      "",
+                      {
+                        "variableID": "last_utterance"
+                      },
+                      " ",
+                      {
+                        "variableID": "last_response"
+                      },
+                      " "
+                    ]
+                  }
+                ],
+                "variableID": "67e428020030d144c906de45"
+              }
+            ],
+            "label": "",
+            "portsV2": {
+              "byKey": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e42d2683eb9c4c221c4ebf"
+                }
+              },
+              "builtIn": {},
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e42d2683eb9c4c221c4ebe"
+        },
+        "67e42d4083eb9c4c221c4ec8": {
+          "type": "block",
+          "data": {
+            "name": "New Block 9",
+            "steps": [
+              "67e42c6c83eb9c4c221c4ead"
+            ]
+          },
+          "nodeID": "67e42d4083eb9c4c221c4ec8",
+          "coords": [
+            811.4893138337828,
+            -3577.6946720411424
+          ]
+        },
+        "67e69fa40739df83670a121c": {
+          "type": "code",
+          "data": {
+            "name": "",
+            "code": "_memory_ = []",
+            "paths": [],
+            "portsV2": {
+              "byKey": {},
+              "builtIn": {
+                "next": {
+                  "type": "next",
+                  "target": null,
+                  "id": "67e69fa40739df83670a121d"
+                },
+                "fail": {
+                  "type": "fail",
+                  "target": null,
+                  "id": "67e69fa40739df83670a121e"
+                }
+              },
+              "dynamic": []
+            }
+          },
+          "nodeID": "67e69fa40739df83670a121c"
+        }
+      },
+      "offsetX": 1194.8762721087967,
+      "offsetY": 1668.9341678526841,
+      "modified": 1701833501,
+      "creatorID": 3600,
+      "variables": [],
+      "menuItems": [
+        {
+          "type": "NODE",
+          "sourceID": "start00000000000000000000"
+        }
+      ],
+      "menuNodeIDs": [],
+      "intentStepIDs": [],
+      "_id": "67e3dbba14d196785e9ca1ba",
+      "diagramID": "64dbb6696a8fab0013dba194",
+      "versionID": "67e3dbba14d196785e9ca1b7"
+    }
+  },
+  "flows": [],
+  "entities": [],
+  "entityVariants": [],
+  "intents": [
+    {
+      "id": "None",
+      "name": "None",
+      "createdByID": 3600,
+      "folderID": null,
+      "description": null,
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedd9f",
+      "name": "No",
+      "createdByID": 3600,
+      "folderID": null,
+      "description": "Trigger this intent then the user responds negatively",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd1",
+      "name": "Yes",
+      "createdByID": 3600,
+      "folderID": null,
+      "description": "Trigger this intent when the user responds positively.",
+      "automaticReprompt": false,
+      "entityOrder": [],
+      "automaticRepromptSettings": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    }
+  ],
+  "utterances": [
+    {
+      "id": "6797c2110cfd6c00ccbedda0",
+      "text": [
+        {
+          "text": [
+            "I'm good"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda1",
+      "text": [
+        {
+          "text": [
+            "Nope"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda2",
+      "text": [
+        {
+          "text": [
+            "I think I'm good thanks"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda3",
+      "text": [
+        {
+          "text": [
+            "Definitely not"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda4",
+      "text": [
+        {
+          "text": [
+            "Nope"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda5",
+      "text": [
+        {
+          "text": [
+            "Under no circumstances"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda6",
+      "text": [
+        {
+          "text": [
+            "Not at all"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda7",
+      "text": [
+        {
+          "text": [
+            "Nope, not at all"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda8",
+      "text": [
+        {
+          "text": [
+            "No way"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbedda9",
+      "text": [
+        {
+          "text": [
+            "By no means"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddaa",
+      "text": [
+        {
+          "text": [
+            "Not in the slightest"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddab",
+      "text": [
+        {
+          "text": [
+            "No chance"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddac",
+      "text": [
+        {
+          "text": [
+            "Absolutely not"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddad",
+      "text": [
+        {
+          "text": [
+            "Not at all"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddae",
+      "text": [
+        {
+          "text": [
+            "Negative"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddaf",
+      "text": [
+        {
+          "text": [
+            "Sorry, no"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddb0",
+      "text": [
+        {
+          "text": [
+            "Definitely not"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddb1",
+      "text": [
+        {
+          "text": [
+            "That's wrong"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddb2",
+      "text": [
+        {
+          "text": [
+            "Incorrect"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddb3",
+      "text": [
+        {
+          "text": [
+            "Nope"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2110cfd6c00ccbeddb4",
+      "text": [
+        {
+          "text": [
+            "No"
+          ]
+        }
+      ],
+      "intentID": "6797c2110cfd6c00ccbedd9f",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd2",
+      "text": [
+        {
+          "text": [
+            "Definitely"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd3",
+      "text": [
+        {
+          "text": [
+            "Indeed"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd4",
+      "text": [
+        {
+          "text": [
+            "Of course"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd5",
+      "text": [
+        {
+          "text": [
+            "Certainly"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd6",
+      "text": [
+        {
+          "text": [
+            "Without question"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd7",
+      "text": [
+        {
+          "text": [
+            "Sure"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd8",
+      "text": [
+        {
+          "text": [
+            "Definitely"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddd9",
+      "text": [
+        {
+          "text": [
+            "You bet"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddda",
+      "text": [
+        {
+          "text": [
+            "Without a doubt"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbedddb",
+      "text": [
+        {
+          "text": [
+            "By all means"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbedddc",
+      "text": [
+        {
+          "text": [
+            "Agreed"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbedddd",
+      "text": [
+        {
+          "text": [
+            "Absolutely"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbeddde",
+      "text": [
+        {
+          "text": [
+            "That's correct"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbedddf",
+      "text": [
+        {
+          "text": [
+            "Indeed"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbedde0",
+      "text": [
+        {
+          "text": [
+            "Affirmative"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c2660cfd6c00ccbedde1",
+      "text": [
+        {
+          "text": [
+            "You are right"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c3060cfd6c00ccbede5c",
+      "text": [
+        {
+          "text": [
+            "Correct"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c3080cfd6c00ccbede5d",
+      "text": [
+        {
+          "text": [
+            "Yep"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "6797c3090cfd6c00ccbede5e",
+      "text": [
+        {
+          "text": [
+            "Yes"
+          ]
+        }
+      ],
+      "intentID": "6797c2660cfd6c00ccbeddd1",
+      "language": "en-us",
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    }
+  ],
+  "requiredEntities": [],
+  "folders": [],
+  "responses": [
+    {
+      "id": "66e495882c6dde44b3c05728",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "66e9ed3ecc90326d546e95e6",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67df4dfa8ef7fa02101c3cb5",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e11e8c8ef7fa02101d51de",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e16b482816ac6a811f00ec",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e3e575e5a8e42a46e273b7",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T11:31:01.000Z",
+      "updatedAt": "2025-03-26T11:31:06.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e3f8500030d144c906aec9",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T12:51:28.000Z",
+      "updatedAt": "2025-03-26T12:51:44.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e427db0030d144c906de0c",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T16:14:20.000Z",
+      "updatedAt": "2025-03-26T16:14:25.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e427fc0030d144c906de3c",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-26T16:14:52.000Z",
+      "updatedAt": "2025-03-26T16:14:57.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e69a05eb462a0ca3760715",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-28T12:45:57.000Z",
+      "updatedAt": "2025-03-28T12:46:05.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e69a56eb462a0ca3760782",
+      "name": "",
+      "createdByID": 3600,
+      "folderID": null,
+      "type": "message",
+      "draft": false,
+      "createdAt": "2025-03-28T12:47:19.000Z",
+      "updatedAt": "2025-03-28T12:47:23.000Z",
+      "updatedByID": 3600
+    }
+  ],
+  "responseMessages": [
+    {
+      "id": "67e69a05eb462a0ca3760717",
+      "discriminatorID": "67e69a05eb462a0ca3760716",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "67e11e928ef7fa02101d51ee"
+            },
+            " "
+          ]
+        },
+        {
+          "text": [
+            "",
+            {
+              "variableID": "last_response"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-28T12:45:57.000Z"
+    },
+    {
+      "id": "67e69a56eb462a0ca3760784",
+      "discriminatorID": "67e69a56eb462a0ca3760783",
+      "text": [
+        {
+          "text": [
+            "Reset"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-28T12:47:19.000Z"
+    },
+    {
+      "id": "66e9ed3ecc90326d546e95e8",
+      "discriminatorID": "66e9ed3ecc90326d546e95e7",
+      "text": [
+        {
+          "text": [
+            "Ask a question, and I'll use AI to answer it!"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "66e495882c6dde44b3c0572a",
+      "discriminatorID": "66e495882c6dde44b3c05729",
+      "text": [
+        {
+          "text": [
+            "Hi there, I'm your new AI agent!"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67df4dfa8ef7fa02101c3cb7",
+      "discriminatorID": "67df4dfa8ef7fa02101c3cb6",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "67df4df58ef7fa02101c3cab"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67e11e8c8ef7fa02101d51e0",
+      "discriminatorID": "67e11e8c8ef7fa02101d51df",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "67e11e928ef7fa02101d51ee"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67e16b482816ac6a811f00ee",
+      "discriminatorID": "67e16b482816ac6a811f00ed",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "67df4df58ef7fa02101c3cab"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67e3e575e5a8e42a46e273b9",
+      "discriminatorID": "67e3e575e5a8e42a46e273b8",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "67e3f034e5a8e42a46e27e9e"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T11:31:01.000Z"
+    },
+    {
+      "id": "67e3f8500030d144c906aecb",
+      "discriminatorID": "67e3f8500030d144c906aeca",
+      "text": [
+        {
+          "text": [
+            "Error reaching MCP Client"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T12:51:28.000Z"
+    },
+    {
+      "id": "67e427db0030d144c906de0e",
+      "discriminatorID": "67e427db0030d144c906de0d",
+      "text": [
+        {
+          "text": [
+            "Nice to meet you"
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T16:14:20.000Z"
+    },
+    {
+      "id": "67e427fc0030d144c906de3e",
+      "discriminatorID": "67e427fc0030d144c906de3d",
+      "text": [
+        {
+          "text": [
+            "",
+            {
+              "variableID": "67e428020030d144c906de45"
+            },
+            " "
+          ]
+        }
+      ],
+      "condition": null,
+      "delay": null,
+      "createdAt": "2025-03-26T16:14:52.000Z"
+    }
+  ],
+  "responseDiscriminators": [
+    {
+      "id": "67e69a05eb462a0ca3760716",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e69a05eb462a0ca3760715",
+      "variantOrder": [
+        "67e69a05eb462a0ca3760717"
+      ],
+      "createdAt": "2025-03-28T12:45:57.000Z"
+    },
+    {
+      "id": "67e69a56eb462a0ca3760783",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e69a56eb462a0ca3760782",
+      "variantOrder": [
+        "67e69a56eb462a0ca3760784"
+      ],
+      "createdAt": "2025-03-28T12:47:19.000Z"
+    },
+    {
+      "id": "66e495882c6dde44b3c05729",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e495882c6dde44b3c05728",
+      "variantOrder": [
+        "66e495882c6dde44b3c0572a"
+      ],
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "66e9ed3ecc90326d546e95e7",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "66e9ed3ecc90326d546e95e6",
+      "variantOrder": [
+        "66e9ed3ecc90326d546e95e8"
+      ],
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67df4dfa8ef7fa02101c3cb6",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67df4dfa8ef7fa02101c3cb5",
+      "variantOrder": [
+        "67df4dfa8ef7fa02101c3cb7"
+      ],
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67e11e8c8ef7fa02101d51df",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e11e8c8ef7fa02101d51de",
+      "variantOrder": [
+        "67e11e8c8ef7fa02101d51e0"
+      ],
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67e16b482816ac6a811f00ed",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e16b482816ac6a811f00ec",
+      "variantOrder": [
+        "67e16b482816ac6a811f00ee"
+      ],
+      "createdAt": "2025-03-26T10:49:30.000Z"
+    },
+    {
+      "id": "67e3f8500030d144c906aeca",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e3f8500030d144c906aec9",
+      "variantOrder": [
+        "67e3f8500030d144c906aecb"
+      ],
+      "createdAt": "2025-03-26T12:51:28.000Z"
+    },
+    {
+      "id": "67e3e575e5a8e42a46e273b8",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e3e575e5a8e42a46e273b7",
+      "variantOrder": [
+        "67e3e575e5a8e42a46e273b9"
+      ],
+      "createdAt": "2025-03-26T11:31:01.000Z"
+    },
+    {
+      "id": "67e427db0030d144c906de0d",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e427db0030d144c906de0c",
+      "variantOrder": [
+        "67e427db0030d144c906de0e"
+      ],
+      "createdAt": "2025-03-26T16:14:20.000Z"
+    },
+    {
+      "id": "67e427fc0030d144c906de3d",
+      "channel": "default",
+      "language": "en-us",
+      "responseID": "67e427fc0030d144c906de3c",
+      "variantOrder": [
+        "67e427fc0030d144c906de3e"
+      ],
+      "createdAt": "2025-03-26T16:14:52.000Z"
+    }
+  ],
+  "variables": [
+    {
+      "id": "user_id",
+      "name": "user_id",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The user's unique ID.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "sessions",
+      "name": "sessions",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "number",
+      "description": "The number of times a particular user has opened the app.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "timestamp",
+      "name": "timestamp",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "UNIX timestamp (number of seconds since January 1st, 1970 at UTC).",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "platform",
+      "name": "platform",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The platform your agent is running on (e.g. \"voiceflow\").",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "locale",
+      "name": "locale",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The locale of the user (eg. en-US, en-CA, it-IT, fr-FR, ...).",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "intent_confidence",
+      "name": "intent_confidence",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "number",
+      "description": "The confidence interval (measured as a value from 0 to 100) for the most recently matched intent.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "last_response",
+      "name": "last_response",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The agent's last response (text/speak) in a string.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "last_event",
+      "name": "last_event",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "any",
+      "description": "The object containing the last event that the user client has triggered.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "last_utterance",
+      "name": "last_utterance",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "The user's last utterance in a text string.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "vf_memory",
+      "name": "vf_memory",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": true,
+      "datatype": "text",
+      "description": "Last 10 user inputs and agent responses in a string (e.g. \"agent: How can i help?\"\nuser: What's the weather today?).",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "chunks",
+      "name": "chunks",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Information received from the knowledge base - also known as 'chunks'.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "675c8d77e1001ceb5700a6bc",
+      "name": "question",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "The question that the user asked",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67df4df58ef7fa02101c3cab",
+      "name": "MCP_Response",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e11e928ef7fa02101d51ee",
+      "name": "query",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e173d7b38caa87c5ed39eb",
+      "name": "conversationId",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "",
+      "defaultValue": "0",
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-26T10:49:30.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e16b7fb38caa87c5ed3227",
+      "name": "MCP_ToolsResponse",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "An array of one or multiple responses from the MCP Tools to help you generate your answer.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-28T12:02:50.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e3e41de5a8e42a46e2729c",
+      "name": "MCP_Error",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T11:25:18.000Z",
+      "updatedAt": "2025-03-26T11:25:18.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e3e8dfe5a8e42a46e27738",
+      "name": "MCP_Available_Tools",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T11:45:36.000Z",
+      "updatedAt": "2025-03-26T11:45:36.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e3f034e5a8e42a46e27e9e",
+      "name": "waiting_phrase",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "An LLM generate short sentence to let user knows the operation you're doing with the tools.",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T12:16:53.000Z",
+      "updatedAt": "2025-03-26T12:16:53.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e428020030d144c906de45",
+      "name": "debug",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "",
+      "defaultValue": null,
+      "createdAt": "2025-03-26T16:14:58.000Z",
+      "updatedAt": "2025-03-26T16:14:58.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e5e224eb462a0ca375b1f0",
+      "name": "MCP_Memory",
+      "createdByID": 3600,
+      "folderID": null,
+      "color": "#515A63",
+      "isArray": false,
+      "isSystem": false,
+      "datatype": "any",
+      "description": "Variable to store previous and current MCP Responses",
+      "defaultValue": null,
+      "createdAt": "2025-03-27T23:41:25.000Z",
+      "updatedAt": "2025-03-28T12:14:47.000Z",
+      "updatedByID": 3600
+    }
+  ],
+  "workflows": [
+    {
+      "id": "66df755be937eb000784abb2",
+      "name": "MCP Agent",
+      "createdByID": 3600,
+      "folderID": null,
+      "status": null,
+      "isStart": true,
+      "diagramID": "64dbb6696a8fab0013dba194",
+      "assigneeID": null,
+      "description": "A simple workflow that answers questions using the GPT API",
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-04-01T09:44:34.000Z",
+      "updatedByID": 3600
+    }
+  ],
+  "attachments": [],
+  "cardButtons": [],
+  "prompts": [
+    {
+      "id": "675c8da1cd81b525d49e532c",
+      "name": "Answer Question",
+      "createdByID": 3600,
+      "folderID": null,
+      "description": null,
+      "settings": {
+        "model": "claude-3.5-sonnet",
+        "maxTokens": 8000
+      },
+      "messageOrder": [
+        "675c8da1cd81b525d49e532d",
+        "675c911de1001ceb5700a999",
+        "675c8da1cd81b525d49e532e"
+      ],
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-28T12:42:14.000Z",
+      "updatedByID": 3600
+    }
+  ],
+  "promptMessages": [
+    {
+      "id": "675c8da1cd81b525d49e532e",
+      "promptID": "675c8da1cd81b525d49e532c",
+      "pairID": null,
+      "type": "role",
+      "data": {
+        "role": "user",
+        "content": [
+          {
+            "text": [
+              "You have access to the following MCP servers:"
+            ]
+          },
+          {
+            "text": [
+              {
+                "text": [
+                  ""
+                ]
+              }
+            ]
+          },
+          {
+            "text": [
+              "{\n    \"playwright\": {\n      \"name\": \"playwright\",\n      \"actions\": [\n        {\n          \"name\": \"browser_navigate\",\n          \"description\": \"Navigate to a URL\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"url\": {\n                \"type\": \"string\",\n                \"description\": \"The URL to navigate to\"\n              }\n            },\n            \"required\": [\n              \"url\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_go_back\",\n          \"description\": \"Go back to the previous page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_go_forward\",\n          \"description\": \"Go forward to the next page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_choose_file\",\n          \"description\": \"Choose one or multiple files to upload\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"paths\": {\n                \"type\": \"array\",\n                \"items\": {\n                  \"type\": \"string\"\n                },\n                \"description\": \"The absolute paths to the files to upload. Can be a single file or multiple files.\"\n              }\n            },\n            \"required\": [\n              \"paths\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_snapshot\",\n          \"description\": \"Capture accessibility snapshot of the current page, this is better than screenshot\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_click\",\n          \"description\": \"Perform click on a web page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_hover\",\n          \"description\": \"Hover over element on page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_type\",\n          \"description\": \"Type text into editable element\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              },\n              \"text\": {\n                \"type\": \"string\",\n                \"description\": \"Text to type into the element\"\n              },\n              \"submit\": {\n                \"type\": \"boolean\",\n                \"description\": \"Whether to submit entered text (press Enter after)\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\",\n              \"text\",\n              \"submit\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_select_option\",\n          \"description\": \"Select an option in a dropdown\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"element\": {\n                \"type\": \"string\",\n                \"description\": \"Human-readable element description used to obtain permission to interact with the element\"\n              },\n              \"ref\": {\n                \"type\": \"string\",\n                \"description\": \"Exact target element reference from the page snapshot\"\n              },\n              \"values\": {\n                \"type\": \"array\",\n                \"items\": {\n                  \"type\": \"string\"\n                },\n                \"description\": \"Array of values to select in the dropdown. This can be a single value or multiple values.\"\n              }\n            },\n            \"required\": [\n              \"element\",\n              \"ref\",\n              \"values\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_take_screenshot\",\n          \"description\": \"Take a screenshot of the current page. You can't perform actions based on the screenshot, use browser_snapshot for actions.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"raw\": {\n                \"type\": \"boolean\",\n                \"description\": \"Whether to return without compression (in PNG format). Default is false, which returns a JPEG image.\"\n              }\n            },\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_press_key\",\n          \"description\": \"Press a key on the keyboard\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"key\": {\n                \"type\": \"string\",\n                \"description\": \"Name of the key to press or a character to generate, such as `ArrowLeft` or `a`\"\n              }\n            },\n            \"required\": [\n              \"key\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_wait\",\n          \"description\": \"Wait for a specified time in seconds\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"time\": {\n                \"type\": \"number\",\n                \"description\": \"The time to wait in seconds\"\n              }\n            },\n            \"required\": [\n              \"time\"\n            ],\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_save_as_pdf\",\n          \"description\": \"Save page as PDF\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        },\n        {\n          \"name\": \"browser_close\",\n          \"description\": \"Close the page\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"additionalProperties\": false,\n            \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"brave-search\": {\n      \"name\": \"brave-search\",\n      \"actions\": [\n        {\n          \"name\": \"brave_web_search\",\n          \"description\": \"Performs a web search using the Brave Search API, ideal for general queries, news, articles, and online content. Use this for broad information gathering, recent events, or when you need diverse web sources. Supports pagination, content filtering, and freshness controls. Maximum 20 results per request, with offset for pagination. \",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"query\": {\n                \"type\": \"string\",\n                \"description\": \"Search query (max 400 chars, 50 words)\"\n              },\n              \"count\": {\n                \"type\": \"number\",\n                \"description\": \"Number of results (1-20, default 10)\",\n                \"default\": 10\n              },\n              \"offset\": {\n                \"type\": \"number\",\n                \"description\": \"Pagination offset (max 9, default 0)\",\n                \"default\": 0\n              }\n            },\n            \"required\": [\n              \"query\"\n            ]\n          }\n        },\n        {\n          \"name\": \"brave_local_search\",\n          \"description\": \"Searches for local businesses and places using Brave's Local Search API. Best for queries related to physical locations, businesses, restaurants, services, etc. Returns detailed information including:\\n- Business names and addresses\\n- Ratings and review counts\\n- Phone numbers and opening hours\\nUse this when the query implies 'near me' or mentions specific locations. Automatically falls back to web search if no local results are found.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"query\": {\n                \"type\": \"string\",\n                \"description\": \"Local search query (e.g. 'pizza near Central Park')\"\n              },\n              \"count\": {\n                \"type\": \"number\",\n                \"description\": \"Number of results (1-20, default 5)\",\n                \"default\": 5\n              }\n            },\n            \"required\": [\n              \"query\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"time-mcp\": {\n      \"name\": \"time-mcp\",\n      \"actions\": [\n        {\n          \"name\": \"current_time\",\n          \"description\": \"Get the current date and time.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"format\": {\n                \"type\": \"string\",\n                \"description\": \"The format of the time, default is empty string\",\n                \"enum\": [\n                  \"h:mm A\",\n                  \"h:mm:ss A\",\n                  \"YYYY-MM-DD HH:mm:ss\",\n                  \"YYYY-MM-DD\",\n                  \"YYYY-MM\",\n                  \"MM/DD/YYYY\",\n                  \"MM/DD/YY\",\n                  \"YYYY/MM/DD\",\n                  \"YYYY/MM\"\n                ],\n                \"default\": \"YYYY-MM-DD HH:mm:ss\"\n              },\n              \"timezone\": {\n                \"type\": \"string\",\n                \"description\": \"The timezone of the time, IANA timezone name, e.g. Asia/Shanghai\"\n              }\n            },\n            \"required\": [\n              \"format\"\n            ]\n          }\n        },\n        {\n          \"name\": \"relative_time\",\n          \"description\": \"Get the relative time from now.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"time\": {\n                \"type\": \"string\",\n                \"description\": \"The time to get the relative time from now. Format: YYYY-MM-DD HH:mm:ss\"\n              }\n            }\n          }\n        },\n        {\n          \"name\": \"days_in_month\",\n          \"description\": \"Get the number of days in a month.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"date\": {\n                \"type\": \"string\",\n                \"description\": \"The date to get the days in month. Format: YYYY-MM-DD\"\n              }\n            }\n          }\n        },\n        {\n          \"name\": \"get_timestamp\",\n          \"description\": \"Get the timestamp of a time.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"time\": {\n                \"type\": \"string\",\n                \"description\": \"The time to get the timestamp. Format: YYYY-MM-DD HH:mm:ss\"\n              }\n            }\n          }\n        },\n        {\n          \"name\": \"convert_time\",\n          \"description\": \"Convert time between timezones.\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"sourceTimezone\": {\n                \"type\": \"string\",\n                \"description\": \"The source timezone. IANA timezone name, e.g. Asia/Shanghai\"\n              },\n              \"targetTimezone\": {\n                \"type\": \"string\",\n                \"description\": \"The target timezone. IANA timezone name, e.g. Europe/London\"\n              },\n              \"time\": {\n                \"type\": \"string\",\n                \"description\": \"Date and time in 24-hour format. e.g. 2025-03-23 12:30:00\"\n              }\n            },\n            \"required\": [\n              \"sourceTimezone\",\n              \"targetTimezone\",\n              \"time\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"weather-server\": {\n      \"name\": \"weather-server\",\n      \"actions\": [\n        {\n          \"name\": \"get_current_weather\",\n          \"description\": \"Get current weather for a specified city\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"city\": {\n                \"type\": \"string\",\n                \"description\": \"City name (e.g., \\\"London\\\", \\\"New York\\\", \\\"Tokyo\\\")\"\n              }\n            },\n            \"required\": [\n              \"city\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"google-calendar\": {\n      \"name\": \"google-calendar\",\n      \"actions\": [\n        {\n          \"name\": \"list-calendars\",\n          \"description\": \"List all available calendars\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"required\": []\n          }\n        },\n        {\n          \"name\": \"list-events\",\n          \"description\": \"List events from a calendar\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar to list events from\"\n              },\n              \"timeMin\": {\n                \"type\": \"string\",\n                \"description\": \"Start time in ISO format (optional)\"\n              },\n              \"timeMax\": {\n                \"type\": \"string\",\n                \"description\": \"End time in ISO format (optional)\"\n              }\n            },\n            \"required\": [\n              \"calendarId\"\n            ]\n          }\n        },\n        {\n          \"name\": \"list-colors\",\n          \"description\": \"List available color IDs for calendar events\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {},\n            \"required\": []\n          }\n        },\n        {\n          \"name\": \"create-event\",\n          \"description\": \"Create a new calendar event\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar to create event in\"\n              },\n              \"summary\": {\n                \"type\": \"string\",\n                \"description\": \"Title of the event\"\n              },\n              \"description\": {\n                \"type\": \"string\",\n                \"description\": \"Description of the event\"\n              },\n              \"start\": {\n                \"type\": \"string\",\n                \"description\": \"Start time in ISO format\"\n              },\n              \"end\": {\n                \"type\": \"string\",\n                \"description\": \"End time in ISO format\"\n              },\n              \"location\": {\n                \"type\": \"string\",\n                \"description\": \"Location of the event\"\n              },\n              \"attendees\": {\n                \"type\": \"array\",\n                \"description\": \"List of attendees\",\n                \"items\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"email\": {\n                      \"type\": \"string\",\n                      \"description\": \"Email address of the attendee\"\n                    }\n                  },\n                  \"required\": [\n                    \"email\"\n                  ]\n                }\n              },\n              \"colorId\": {\n                \"type\": \"string\",\n                \"description\": \"Color ID for the event\"\n              },\n              \"reminders\": {\n                \"type\": \"object\",\n                \"description\": \"Reminder settings for the event\",\n                \"properties\": {\n                  \"useDefault\": {\n                    \"type\": \"boolean\",\n                    \"description\": \"Whether to use the default reminders\"\n                  },\n                  \"overrides\": {\n                    \"type\": \"array\",\n                    \"description\": \"Custom reminders (uses popup notifications by default unless email is specified)\",\n                    \"items\": {\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"method\": {\n                          \"type\": \"string\",\n                          \"enum\": [\n                            \"email\",\n                            \"popup\"\n                          ],\n                          \"description\": \"Reminder method (defaults to popup unless email is specified)\",\n                          \"default\": \"popup\"\n                        },\n                        \"minutes\": {\n                          \"type\": \"number\",\n                          \"description\": \"Minutes before the event to trigger the reminder\"\n                        }\n                      },\n                      \"required\": [\n                        \"minutes\"\n                      ]\n                    }\n                  }\n                },\n                \"required\": [\n                  \"useDefault\"\n                ]\n              }\n            },\n            \"required\": [\n              \"calendarId\",\n              \"summary\",\n              \"start\",\n              \"end\"\n            ]\n          }\n        },\n        {\n          \"name\": \"update-event\",\n          \"description\": \"Update an existing calendar event\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar containing the event\"\n              },\n              \"eventId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the event to update\"\n              },\n              \"summary\": {\n                \"type\": \"string\",\n                \"description\": \"New title of the event\"\n              },\n              \"description\": {\n                \"type\": \"string\",\n                \"description\": \"New description of the event\"\n              },\n              \"start\": {\n                \"type\": \"string\",\n                \"description\": \"New start time in ISO format\"\n              },\n              \"end\": {\n                \"type\": \"string\",\n                \"description\": \"New end time in ISO format\"\n              },\n              \"location\": {\n                \"type\": \"string\",\n                \"description\": \"New location of the event\"\n              },\n              \"colorId\": {\n                \"type\": \"string\",\n                \"description\": \"New color ID for the event\"\n              },\n              \"attendees\": {\n                \"type\": \"array\",\n                \"description\": \"List of attendees\",\n                \"items\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"email\": {\n                      \"type\": \"string\",\n                      \"description\": \"Email address of the attendee\"\n                    }\n                  },\n                  \"required\": [\n                    \"email\"\n                  ]\n                }\n              },\n              \"reminders\": {\n                \"type\": \"object\",\n                \"description\": \"New reminder settings for the event\",\n                \"properties\": {\n                  \"useDefault\": {\n                    \"type\": \"boolean\",\n                    \"description\": \"Whether to use the default reminders\"\n                  },\n                  \"overrides\": {\n                    \"type\": \"array\",\n                    \"description\": \"Custom reminders (uses popup notifications by default unless email is specified)\",\n                    \"items\": {\n                      \"type\": \"object\",\n                      \"properties\": {\n                        \"method\": {\n                          \"type\": \"string\",\n                          \"enum\": [\n                            \"email\",\n                            \"popup\"\n                          ],\n                          \"description\": \"Reminder method (defaults to popup unless email is specified)\",\n                          \"default\": \"popup\"\n                        },\n                        \"minutes\": {\n                          \"type\": \"number\",\n                          \"description\": \"Minutes before the event to trigger the reminder\"\n                        }\n                      },\n                      \"required\": [\n                        \"minutes\"\n                      ]\n                    }\n                  }\n                },\n                \"required\": [\n                  \"useDefault\"\n                ]\n              }\n            },\n            \"required\": [\n              \"calendarId\",\n              \"eventId\"\n            ]\n          }\n        },\n        {\n          \"name\": \"delete-event\",\n          \"description\": \"Delete a calendar event\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"calendarId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the calendar containing the event\"\n              },\n              \"eventId\": {\n                \"type\": \"string\",\n                \"description\": \"ID of the event to delete\"\n              }\n            },\n            \"required\": [\n              \"calendarId\",\n              \"eventId\"\n            ]\n          }\n        }\n      ],\n      \"enabled\": true\n    },\n    \"zapier-actions-mcp\": {\n      \"name\": \"zapier-actions-mcp\",\n      \"actions\": [\n        {\n          \"name\": \"send_slack_direct_message\",\n          \"description\": \"Sends a direct message to a user or yourself from the Slackbot. Can also schedule a message for later. (Fixed parameters: To Username: NiKo)\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"preview_only\": {\n                \"type\": \"boolean\",\n                \"description\": \"When set to true, the action will only be previewed without actually executing it\"\n              },\n              \"text\": {\n                \"type\": \"string\",\n                \"description\": \"Message Text\"\n              }\n            },\n            \"required\": [\n              \"text\"\n            ]\n          }\n        },\n        {\n          \"name\": \"edit_actions\",\n          \"description\": \"Edit your existing MCP provider actions\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"random_string\": {\n                \"type\": \"string\",\n                \"description\": \"Dummy parameter for no-parameter tools\"\n              }\n            },\n            \"required\": []\n          }\n        },\n        {\n          \"name\": \"add_actions\",\n          \"description\": \"Add new actions to your MCP provider\",\n          \"inputSchema\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"random_string\": {\n                \"type\": \"string\",\n                \"description\": \"Dummy parameter for no-parameter tools\"\n              }\n            },\n            \"required\": []\n          }\n        }\n      ],\n      \"enabled\": true\n    }\n  }"
+            ]
+          },
+          {
+            "text": [
+              {
+                "text": [
+                  ""
+                ]
+              }
+            ]
+          },
+          {
+            "text": [
+              "User them to generate your answer whenever needed in user's query."
+            ]
+          },
+          {
+            "text": [
+              {
+                "text": [
+                  ""
+                ]
+              }
+            ]
+          },
+          {
+            "text": [
+              "User: ",
+              {
+                "variableID": "last_utterance"
+              },
+              " "
+            ]
+          }
+        ]
+      },
+      "createdAt": "2024-12-13T19:40:18.000Z"
+    },
+    {
+      "id": "675c8da1cd81b525d49e532d",
+      "promptID": "675c8da1cd81b525d49e532c",
+      "pairID": null,
+      "type": "role",
+      "data": {
+        "role": "system",
+        "content": [
+          {
+            "text": [
+              "You are a helpful assistant. Your job is to answer questions using simple language. Keep your answers brief. Short and concise. Be friendly."
+            ]
+          }
+        ]
+      },
+      "createdAt": "2024-12-13T19:40:18.000Z"
+    },
+    {
+      "id": "675c911de1001ceb5700a999",
+      "promptID": "675c8da1cd81b525d49e532c",
+      "pairID": null,
+      "type": "variable",
+      "data": {
+        "role": "user",
+        "content": [
+          {
+            "text": [
+              {
+                "variableID": "vf_memory"
+              }
+            ]
+          }
+        ]
+      },
+      "createdAt": "2024-12-13T19:55:10.000Z"
+    }
+  ],
+  "events": [],
+  "agents": [
+    {
+      "id": "67dafd51cbe88befffef1b32",
+      "name": "Basic Conversational Agent",
+      "createdByID": 3600,
+      "folderID": null,
+      "settings": {
+        "model": "gpt-o3-mini",
+        "maxTokens": 8000,
+        "temperature": 0.3
+      },
+      "description": "This is a simple conversational agent which can answer questions and have a conversation with a user entirely using an LLM's knowledge and MCP tools.",
+      "instructions": [
+        {
+          "text": [
+            "You are a conversational AI assistant that answers user questions accurately and efficiently. You are friendly but to the point. You may ask brief follow-up questions only if necessary to clarify vague or incomplete queries."
+          ]
+        },
+        {
+          "text": [
+            "Start new conversation by welcoming the user.\n"
+          ]
+        },
+        {
+          "text": [
+            "Current userId is: ",
+            {
+              "variableID": "user_id"
+            },
+            " "
+          ]
+        },
+        {
+          "text": [
+            "Current conversationId is: user-",
+            {
+              "variableID": "user_id"
+            },
+            " "
+          ]
+        },
+        {
+          "text": [
+            {
+              "text": [
+                ""
+              ]
+            }
+          ]
+        },
+        {
+          "text": [
+            "# MCP Tool Feature for real time. more accurante content and specific actions:"
+          ]
+        },
+        {
+          "text": [
+            "You have access to the following tools, you want to check if you can use any of the available MCP tools bellow to answer and prioritize them over a direct answer."
+          ]
+        },
+        {
+          "text": [
+            {
+              "text": [
+                ""
+              ]
+            }
+          ]
+        },
+        {
+          "text": [
+            "<tools_schema>"
+          ]
+        },
+        {
+          "text": [
+            "",
+            {
+              "variableID": "67e3e8dfe5a8e42a46e27738"
+            },
+            " "
+          ]
+        },
+        {
+          "text": [
+            "</tools_schema>"
+          ]
+        },
+        {
+          "text": [
+            {
+              "text": [
+                ""
+              ]
+            }
+          ]
+        },
+        {
+          "text": [
+            "Based on the tools schema, before using the tools ask the user for helpfull or required properties if needed to help with the query. "
+          ]
+        },
+        {
+          "text": [
+            {
+              "text": [
+                "It can takes some time to retrieve the information from the tools, so be sure to update the waiting_phrase first."
+              ]
+            },
+            {
+              "text": [
+                {
+                  "text": [
+                    ""
+                  ]
+                }
+              ]
+            },
+            {
+              "text": [
+                "MCP tools can return one or multiple tools raw responses or error, you use this context to prepare your final answer."
+              ]
+            },
+            {
+              "text": [
+                "Always analyze the responses from each tools to find the most accurate and pertinent info for each part of user request or task and share you final answer."
+              ]
+            },
+            {
+              "text": [
+                {
+                  "text": [
+                    ""
+                  ]
+                }
+              ]
+            },
+            {
+              "text": [
+                "Try to always send the full query so the MCP Function can make multiple tools request and return all the tools responses at once."
+              ]
+            },
+            {
+              "text": [
+                "If you choose to make multiple calls to the tools, be sure to inform the user of the current task before making a new tool query."
+              ]
+            },
+            {
+              "text": [
+                {
+                  "text": [
+                    ""
+                  ]
+                }
+              ]
+            },
+            {
+              "text": [
+                "<tools_raw_response>"
+              ]
+            },
+            {
+              "text": [
+                "",
+                {
+                  "variableID": "67e16b7fb38caa87c5ed3227"
+                },
+                ""
+              ]
+            },
+            {
+              "text": [
+                "</tools_raw_response>"
+              ]
+            },
+            {
+              "text": [
+                {
+                  "text": [
+                    ""
+                  ]
+                }
+              ]
+            },
+            {
+              "text": [
+                "<tools_error>"
+              ]
+            },
+            {
+              "text": [
+                "",
+                {
+                  "variableID": "67e3e41de5a8e42a46e2729c"
+                },
+                " \n</tools_error>"
+              ]
+            }
+          ]
+        },
+        {
+          "text": [
+            "\n# Behavior Guidelines:\n* Be concise, but conversational. No overly long explanations.\n* Ask clarifying questions only if needed. If the question is clear and don't need tools, answer immediately.\n* Do not overextend the conversation. Provide the answer, and let the user decide if they need more.\n* Avoid unnecessary filler. No “I’m looking that up…” - just answer directly."
+          ]
+        },
+        {
+          "text": [
+            {
+              "text": [
+                ""
+              ]
+            }
+          ]
+        },
+        {
+          "text": [
+            "## Workflow:\n1. User asks a question."
+          ]
+        },
+        {
+          "text": [
+            "2. If clear → Answer directly while prioritizing the use of your tools."
+          ]
+        },
+        {
+          "text": [
+            "3. If you can't answer, try first the MCP tools function to generate an answer using one or multiple MCP Tools. \n4. End the interaction naturally.\n\n💬 Example Interactions:\n\n✅ Direct answer when clear:\nUser: \"Who won the last World Cup?\"\nAgent: \"Argentina won the 2022 FIFA World Cup, beating France in the final.\"\n\n✅ Clarifying when needed:\nUser: \"What's the best laptop?\"\nAgent: \"That depends! Are you looking for a gaming laptop, something for work, or just general use?\"\n\n✅ Keeping it conversational, but brief:\nUser: \"How do I get better at public speaking?\"\nAgent: \"Practice is key! Try speaking in front of a mirror, recording yourself, or joining a group like Toastmasters. Want a specific tip on handling nerves?\""
+          ]
+        }
+      ],
+      "pathToolOrder": [
+        "67e67f39eb462a0ca375f7b3"
+      ],
+      "webSearchTool": null,
+      "functionToolOrder": [],
+      "knowledgeBaseTool": null,
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-03-28T15:20:33.000Z",
+      "updatedByID": 3600
+    }
+  ],
+  "agentPathTools": [
+    {
+      "id": "67e67f39eb462a0ca375f7b3",
+      "name": "MCP Tools",
+      "agentID": "67dafd51cbe88befffef1b32",
+      "description": "When user ask for something that might be out of your scope or can't do, you want to check if you can use the available MCP tools to answer.\nIf you can only fulfill part of user request using your tools, inform the user and use the available tools for the remaining task.\nThis can take awhile so be sure to update the waiting_phrase first then call the tools.",
+      "variableOrder": [
+        "67e67f56eb462a0ca375f7c1",
+        "67e67f6feb462a0ca375f7cc",
+        "67e67f7beb462a0ca375f7d3",
+        "67e68085eb462a0ca375f873"
+      ],
+      "createdAt": "2025-03-28T10:51:38.000Z"
+    }
+  ],
+  "agentFunctionTools": [],
+  "agentPathToolVariables": [
+    {
+      "id": "67e67f56eb462a0ca375f7c1",
+      "kind": "variable",
+      "entityID": null,
+      "variableID": "user_id",
+      "description": "UserId passed in the context",
+      "agentPathToolID": "67e67f39eb462a0ca375f7b3",
+      "createdAt": "2025-03-28T10:52:06.000Z"
+    },
+    {
+      "id": "67e67f6feb462a0ca375f7cc",
+      "kind": "variable",
+      "entityID": null,
+      "variableID": "67e173d7b38caa87c5ed39eb",
+      "description": "Conversation ID passed in the context",
+      "agentPathToolID": "67e67f39eb462a0ca375f7b3",
+      "createdAt": "2025-03-28T10:52:31.000Z"
+    },
+    {
+      "id": "67e67f7beb462a0ca375f7d3",
+      "kind": "variable",
+      "entityID": null,
+      "variableID": "67e11e928ef7fa02101d51ee",
+      "description": "Last user question or query with context if needed",
+      "agentPathToolID": "67e67f39eb462a0ca375f7b3",
+      "createdAt": "2025-03-28T10:52:44.000Z"
+    },
+    {
+      "id": "67e68085eb462a0ca375f873",
+      "kind": "variable",
+      "entityID": null,
+      "variableID": "67e3f034e5a8e42a46e27e9e",
+      "description": null,
+      "agentPathToolID": "67e67f39eb462a0ca375f7b3",
+      "createdAt": "2025-03-28T10:57:09.000Z"
+    }
+  ],
+  "functions": [
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc2",
+      "name": "MCP Tools (copy)",
+      "createdByID": 3600,
+      "folderID": null,
+      "code": "export default async function main(args) {\n\n  const { inputVars } = args\n\n  for (const key in inputVars) {\n    if (inputVars.hasOwnProperty(key)) {\n      inputVars[key] = inputVars[key].trim();\n    }\n  }\n\n  let nextPath = 'default'\n  const outputVars = {}\n  const trace = []\n\n  outputVars.answer = null\n  outputVars.error = ''\n  outputVars.toolsResponses = null\n  //outputVars.conversationId = inputVars.conversationId || '0'\n\n  try {\n\n      const body = {\n        query: inputVars.query,\n        llm_answer: false,\n        userId: inputVars.userId || 'none',\n        queryTimeoutMs: 120000\n      };\n      \n      if (inputVars.conversationId && inputVars.conversationId !== '0') {\n        body.conversationId = inputVars.conversationId;\n      }\n\n      const messageResponse = await fetch(`https://mcp-client.proxy-voiceflow.com/api/query`, {\n        method: 'POST',\n        headers: {\n            'Content-Type': 'application/json'\n        },\n        body: JSON.stringify(body)\n      })\n      if (!messageResponse.ok) throw new Error(`MCP Tools Error (Message)`)\n\n    \n\n    const message = await messageResponse.json\n\n    outputVars.answer = message.answer || ''\n    outputVars.toolsResponses = JSON.stringify(message.toolResponses) || ''\n\n    /* trace.push({\n      type: 'debug',\n      payload: {\n        message: 'All good'\n      }\n    }) */\n\n  } catch(error) {\n    nextPath = 'error'\n    outputVars.error = error.message\n  }\n\n  return {\n    next: { path: nextPath },\n    outputVars: outputVars,\n    trace: trace\n  }\n}",
+      "image": "https://cm4-production-assets.s3.amazonaws.com/1715717616588-openai-logo-1.png",
+      "description": "This function will use MCP tools to help users with their requests and return an answer.",
+      "pathOrder": [
+        "67e3dc6ce5a8e42a46e26bc3",
+        "67e3dc6ce5a8e42a46e26bc4"
+      ],
+      "createdAt": "2025-03-26T10:52:28.000Z",
+      "updatedAt": "2025-03-26T10:52:28.000Z",
+      "updatedByID": 3600
+    },
+    {
+      "id": "67e16d9fb38caa87c5ed347a",
+      "name": "MCP Tools",
+      "createdByID": 3600,
+      "folderID": null,
+      "code": "export default async function main(args) {\n\n  const { inputVars } = args\n\n  for (const key in inputVars) {\n    if (inputVars.hasOwnProperty(key)) {\n      inputVars[key] = inputVars[key].trim();\n    }\n  }\n\n  let nextPath = 'default'\n  const outputVars = {}\n  const trace = []\n\n  outputVars.answer = null\n  outputVars.error = ''\n  outputVars.toolsResponse = null\n\n  try {\n\n      const body = {\n        query: inputVars.query,\n        llm_answer: false,\n        userId: inputVars.userId || 'none',\n        queryTimeoutMs: 85000\n      };\n      \n      if (inputVars.conversationId && inputVars.conversationId !== '0') {\n        body.conversationId = inputVars.conversationId;\n      }\n\n      const messageResponse = await fetch(`https://mcp-client.proxy-voiceflow.com/api/query`, {\n        method: 'POST',\n        headers: {\n            'Content-Type': 'application/json'\n        },\n        body: JSON.stringify(body)\n      })\n      if (!messageResponse.ok) throw new Error(`MCP Tools Error (Message)`)\n\n    const message = await messageResponse.json\n\n    outputVars.answer = message.answer || ''\n    outputVars.toolsResponse = JSON.stringify(message.toolResponses) || ''\n\n  } catch(error) {\n    nextPath = 'error'\n    outputVars.error = error.message\n  }\n\n  return {\n    next: { path: nextPath },\n    outputVars: outputVars,\n    trace: trace\n  }\n}",
+      "image": "https://cm4-production-assets.s3.amazonaws.com/1743159295813-round-proto-1024.png",
+      "description": "This function will use MCP tools to help users with their requests and return an answer.\nThis can take awhile so respond first then call the tools.\nThe MCP Tools can use multiple tools to help with user query so be sure to analyze all the tools responses before generating your answer.",
+      "pathOrder": [
+        "67e16da9b38caa87c5ed3483",
+        "67e16da9b38caa87c5ed3484"
+      ],
+      "createdAt": "2025-03-26T10:49:30.000Z",
+      "updatedAt": "2025-04-01T09:46:20.000Z",
+      "updatedByID": 3600
+    }
+  ],
+  "functionPaths": [
+    {
+      "id": "67e16da9b38caa87c5ed3483",
+      "name": "error",
+      "label": "",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "createdAt": "2025-03-26T10:49:30.283Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc3",
+      "name": "error",
+      "label": "",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc4",
+      "name": "default",
+      "label": "",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    },
+    {
+      "id": "67e16da9b38caa87c5ed3484",
+      "name": "default",
+      "label": "",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "createdAt": "2025-03-26T10:49:30.284Z"
+    }
+  ],
+  "functionVariables": [
+    {
+      "id": "67e16da9b38caa87c5ed3486",
+      "name": "conversationId",
+      "type": "input",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "description": "Current user conversation ID",
+      "createdAt": "2025-03-26T10:49:30.283Z"
+    },
+    {
+      "id": "67e16da9b38caa87c5ed3487",
+      "name": "error",
+      "type": "output",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "description": "",
+      "createdAt": "2025-03-26T10:49:30.284Z"
+    },
+    {
+      "id": "67e16da9b38caa87c5ed3488",
+      "name": "query",
+      "type": "input",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "description": "Current user query",
+      "createdAt": "2025-03-26T10:49:30.285Z"
+    },
+    {
+      "id": "67e16da9b38caa87c5ed348b",
+      "name": "answer",
+      "type": "output",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "description": "",
+      "createdAt": "2025-03-26T10:49:30.286Z"
+    },
+    {
+      "id": "67e172efb38caa87c5ed392f",
+      "name": "userId",
+      "type": "input",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "description": "Current user ID",
+      "createdAt": "2025-03-26T10:49:30.287Z"
+    },
+    {
+      "id": "67e17564b38caa87c5ed3ba8",
+      "name": "toolsResponse",
+      "type": "output",
+      "functionID": "67e16d9fb38caa87c5ed347a",
+      "description": "Responses from the tools to generate your final answer",
+      "createdAt": "2025-03-26T10:49:30.288Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc5",
+      "name": "conversationId",
+      "type": "input",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "description": "Current user conversation ID",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc6",
+      "name": "error",
+      "type": "output",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "description": "",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc7",
+      "name": "query",
+      "type": "input",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "description": "Current user query",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc8",
+      "name": "answer",
+      "type": "output",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "description": "",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bc9",
+      "name": "userId",
+      "type": "input",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "description": "Current user ID",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    },
+    {
+      "id": "67e3dc6ce5a8e42a46e26bca",
+      "name": "toolsResponses",
+      "type": "output",
+      "functionID": "67e3dc6ce5a8e42a46e26bc2",
+      "description": "",
+      "createdAt": "2025-03-26T10:52:28.324Z"
+    }
+  ],
+  "project": {
+    "type": "chat",
+    "name": "MCP Agent",
+    "image": "https://cm4-production-assets.s3.amazonaws.com/1729190521409-square-onyx-1024.jpg",
+    "teamID": "vrk1JG18j3",
+    "members": [],
+    "privacy": "private",
+    "platform": "webchat",
+    "_version": 1.2,
+    "linkType": "STRAIGHT",
+    "creatorID": 3600,
+    "updatedBy": 3600,
+    "apiPrivacy": "public",
+    "platformData": {
+      "invocationName": "template project general"
+    },
+    "customThemes": [],
+    "aiAssistSettings": {
+      "aiPlayground": true
+    },
+    "_id": "67e3dbba14d196785e9ca1b6",
+    "updatedAt": "2025-03-28T12:58:33.794Z",
+    "devVersion": "67e3dbba14d196785e9ca1b7",
+    "liveVersion": "67e3dbba14d196785e9ca1b8"
+  },
+  "_version": "1.2",
+  "secrets": [],
+  "variableStates": []
+}
