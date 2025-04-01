@@ -1,4 +1,4 @@
-# MCP Client
+# Voiceflow MCP Client
 
 A Node.js client for the Model Context Protocol (MCP) that integrates with remote MCP servers to provide tools for LLMs.
 
