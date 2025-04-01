@@ -52,14 +52,18 @@ RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key
 # Set working directory
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
+# Copy package files and .gitmodules
+COPY package*.json .gitmodules ./
 
-# Install dependencies
-RUN npm install
+# Initialize git repository and submodules
+RUN git init && \
+    git submodule update --init --recursive
 
 # Copy the rest of the application
 COPY . .
+
+# Install dependencies
+RUN npm install
 
 # Build the application
 RUN npm run build
