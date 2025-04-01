@@ -26,7 +26,18 @@ A Node.js client for the Model Context Protocol (MCP) that integrates with remot
 npm install
 ```
 
-3. Set up environment variables:
+3. Build the MCP servers:
+
+```bash
+npm run build
+```
+
+This will:
+- Set up Playwright dependencies
+- Build the weather MCP server
+- Build the Google Calendar MCP server
+
+4. Set up environment variables:
    - Copy `.env.template` to create a new `.env` file:
    ```bash
    cp .env.template .env
