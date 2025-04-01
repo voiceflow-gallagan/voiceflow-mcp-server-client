@@ -19,9 +19,17 @@ A Node.js client for the Model Context Protocol (MCP) that integrates with remot
 
 ### Installation
 
-1. Clone the repository
-2. Install dependencies:
+1. Clone the repository with submodules:
+```bash
+git clone --recursive https://github.com/voiceflow-gallagan/voiceflow-mcp-server-client.git
+```
 
+Or if you've already cloned the repository, initialize the submodules:
+```bash
+git submodule update --init --recursive
+```
+
+2. Install dependencies:
 ```bash
 npm install
 ```
@@ -33,9 +41,12 @@ npm run build
 ```
 
 This will:
-- Set up Playwright dependencies
+- Set up Playwright dependencies (including Chrome and Chromium)
+- Initialize and update Git submodules (weather-mcp-server and google-calendar-mcp)
 - Build the weather MCP server
 - Build the Google Calendar MCP server
+
+Note: The build process requires root access to install Chrome. You may be prompted for your password.
 
 4. Set up environment variables:
    - Copy `.env.template` to create a new `.env` file:

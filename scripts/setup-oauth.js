@@ -1,5 +1,9 @@
 import fs from 'fs'
 import path from 'path'
+import dotenv from 'dotenv'
+
+// Load environment variables from .env file
+dotenv.config()
 
 const createOAuthFiles = () => {
   const googleCalendarDir = path.join(

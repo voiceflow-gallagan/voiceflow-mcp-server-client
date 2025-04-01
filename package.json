@@ -16,11 +16,11 @@
     "test:tools": "node test.js",
     "test:api": "node test-api.js",
     "setup:playwright": "CI=true npx playwright install-deps && CI=true npx playwright install chromium && CI=true npx playwright install chrome && CI=true npx playwright install-deps chrome",
+    "setup:submodules": "git submodule update --init --recursive",
     "build:weather-server": "cd mcp-servers/weather-mcp-server && npm install && npm run build",
     "build:google-calendar": "cd mcp-servers/google-calendar-mcp && npm install && npm run build",
-    "build:mcp-servers": "npm run setup:playwright && npm run build:weather-server && npm run build:google-calendar",
-    "build": "npm run build:mcp-servers",
-    "postinstall": "npm run setup:playwright"
+    "build:mcp-servers": "npm run setup:playwright && npm run setup:submodules && npm run build:weather-server && npm run build:google-calendar",
+    "build": "npm run build:mcp-servers"
   },
   "keywords": [
     "mcp",
